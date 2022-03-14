@@ -1,6 +1,7 @@
 package com.company.ship;
 
-import com.company.container.Container;
+import com.company.container.*;
+import com.company.container.exceptions.NotEnoughSpaceException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +35,32 @@ public class Ship {
         this.containers = new ArrayList<>();
     }
 
-    public void loadContainer(Container container, boolean force){
+    public void loadContainer(Container container, boolean force) throws NotEnoughSpaceException {
         if(force){
             containers.add(container);
+        }
+        else{
+            double loadedMass = 0.0;
+            int dangerousContainers = 0;
+            int electric = 0;
+            int heavy = 0;
+            for(Container temp : containers){
+                loadedMass += temp.getMass();
+
+                if(temp instanceof Hazardous || temp instanceof ExplodingContainer){
+                    dangerousContainers++;
+                }
+                else if(temp instanceof CoolingContainer){
+                    electric++;
+                }
+                else if(temp instanceof HeavyContainer){
+                    heavy++;
+                }
+            }
+
+            if(container.getMass() + loadedMass > maxContainersMass || containers.size() + 1 > maxContainers){
+                throw new NotEnoughSpaceException();
+            }
         }
     }
 

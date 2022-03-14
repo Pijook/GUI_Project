@@ -2,6 +2,7 @@ package com.company;
 
 import com.company.container.Container;
 import com.company.container.ContainerController;
+import com.company.container.exceptions.NotEnoughSpaceException;
 import com.company.ship.Ship;
 import com.company.ship.ShipController;
 
@@ -13,7 +14,7 @@ public class Main {
     private static ShipController shipController;
     private static ContainerController containerController;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, NotEnoughSpaceException {
         loadData();
 
         Scanner scanner = new Scanner(System.in);
@@ -50,7 +51,7 @@ public class Main {
         System.out.println("0. Exit");
     }
 
-    private static void loadData() throws IOException {
+    private static void loadData() throws IOException, NotEnoughSpaceException {
         shipController = new ShipController();
         containerController = new ContainerController();
 

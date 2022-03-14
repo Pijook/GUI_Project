@@ -1,6 +1,7 @@
 package com.company.container;
 
 import com.company.Main;
+import com.company.container.exceptions.NotEnoughSpaceException;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +17,7 @@ public class ContainerController {
         containers = new HashMap<>();
     }
 
-    public void loadContainers() throws IOException {
+    public void loadContainers() throws IOException, NotEnoughSpaceException {
         System.out.println("Loading containers...");
 
         File file = new File("containers.txt");
