@@ -34,6 +34,12 @@ public class Ship {
         this.containers = new ArrayList<>();
     }
 
+    public void loadContainer(Container container, boolean force){
+        if(force){
+            containers.add(container);
+        }
+    }
+
     public String getShipName() {
         return shipName;
     }
@@ -116,16 +122,15 @@ public class Ship {
 
     @Override
     public String toString() {
-        return "Ship{" +
-                "shipName='" + shipName + '\'' +
-                ", port='" + port + '\'' +
-                ", from='" + from + '\'' +
-                ", to='" + to + '\'' +
-                ", maxContainers=" + maxContainers +
-                ", maxContainersMass=" + maxContainersMass +
-                ", maxDangerousContainers=" + maxDangerousContainers +
-                ", maxHeavyContainers=" + maxHeavyContainers +
-                ", maxContainersWithElectricity=" + maxContainersWithElectricity +
-                '}';
+        return "Ship " +
+                "Name: " + shipName + '\'' +
+                "Port: " + port + '\'' +
+                "From: " + from + '\'' +
+                "To: " + to + '\'' +
+                "Max Containers: " + maxContainers +
+                "Max containers mass:" + maxContainersMass +
+                "Max dangerous containers:" + maxDangerousContainers +
+                "Max heavy containers:" + maxHeavyContainers +
+                "Max containers with electricity:" + maxContainersWithElectricity;
     }
 }

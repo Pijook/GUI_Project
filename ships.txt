@@ -1,11 +1,10 @@
-START
 ---
 ship: Kondzio
 port: Warszawa
 from: Warszawa
 to: Berlin
 maxContainers: 20
-maxContainersMass: 20000
+maxContainersMass: 20000.0
 maxDangerousContainers: 3
 maxHeavyContainers: 4
 maxContainersWithElectricity: 1
@@ -15,7 +14,7 @@ port: Berlin
 from: Warszawa
 to: Berlin
 maxContainers: 20
-maxContainersMass: 20000
+maxContainersMass: 20000.0
 maxDangerousContainers: 3
 maxHeavyContainers: 4
 maxContainersWithElectricity: 1

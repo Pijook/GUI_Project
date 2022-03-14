@@ -16,4 +16,9 @@ public class CoolingContainer extends HeavyContainer {
     public void setMinVoltage(double minVoltage) {
         this.minVoltage = minVoltage;
     }
+
+    @Override
+    public String toString() {
+        return "Type: Cooling, Min voltage: " + minVoltage + ", " + super.toString();
+    }
 }

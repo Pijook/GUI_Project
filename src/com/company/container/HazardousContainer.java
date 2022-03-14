@@ -16,4 +16,9 @@ public class HazardousContainer extends HeavyContainer implements Hazardous {
     public void setRadiationLevel(Double radiationLevel) {
         this.radiationLevel = radiationLevel;
     }
+
+    @Override
+    public String toString() {
+        return "Type: Hazardous, Radiation level: " + radiationLevel + ", " + super.toString();
+    }
 }

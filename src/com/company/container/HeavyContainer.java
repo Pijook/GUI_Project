@@ -16,4 +16,9 @@ public class HeavyContainer extends Container {
     public void setSpecialProtection(String specialProtection) {
         this.specialProtection = specialProtection;
     }
+
+    @Override
+    public String toString() {
+        return "Type: Heavy, Special protection: " + specialProtection + ", " + super.toString();
+    }
 }

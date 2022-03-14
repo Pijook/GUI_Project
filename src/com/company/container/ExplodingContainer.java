@@ -1,10 +1,10 @@
 package com.company.container;
 
-public class ExplodingContainers extends HeavyContainer {
+public class ExplodingContainer extends HeavyContainer {
 
     private Double explosionRadius;
 
-    public ExplodingContainers(Double mass, String specialProtection, Double explosionRadius) {
+    public ExplodingContainer(Double mass, String specialProtection, Double explosionRadius) {
         super(mass, specialProtection);
         this.explosionRadius = explosionRadius;
     }
@@ -15,5 +15,10 @@ public class ExplodingContainers extends HeavyContainer {
 
     public void setExplosionRadius(Double explosionRadius) {
         this.explosionRadius = explosionRadius;
+    }
+
+    @Override
+    public String toString() {
+        return "Type: Exploding, Explosion radius: " + explosionRadius + ", " + super.toString();
     }
 }

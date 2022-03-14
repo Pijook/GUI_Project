@@ -16,4 +16,9 @@ public class LiquidContainer extends Container {
     public void setMaxCapacity(double maxCapacity) {
         this.maxCapacity = maxCapacity;
     }
+
+    @Override
+    public String toString() {
+        return "Type: Liquid, Max capacity: " + maxCapacity + ", " + super.toString();
+    }
 }

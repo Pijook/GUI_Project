@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.container.Container;
 import com.company.container.ContainerController;
 import com.company.ship.Ship;
 import com.company.ship.ShipController;
@@ -27,6 +28,11 @@ public class Main {
                         System.out.println(ship);
                     }
                 }
+                case 6 -> {
+                    for(Container container : containerController.getContainers().values()){
+                        System.out.println(container);
+                    }
+                }
             }
         }
 
@@ -40,6 +46,7 @@ public class Main {
         System.out.println("3. Load container on ship");
         System.out.println("4. Unload container from ship");
         System.out.println("5. Show ships");
+        System.out.println("6. Show containers");
         System.out.println("0. Exit");
     }
 
@@ -51,10 +58,18 @@ public class Main {
         containerController.loadContainers();
     }
 
-    private static void saveData(){
+    private static void saveData() throws IOException {
 
         shipController.saveShips();
         containerController.saveContainers();
 
+    }
+
+    public static ContainerController getContainerController() {
+        return containerController;
+    }
+
+    public static ShipController getShipController() {
+        return shipController;
     }
 }

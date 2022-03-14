@@ -16,4 +16,9 @@ public class HazardousLiquidContainer extends LiquidContainer implements Hazardo
     public void setRadiationLevel(Double radiationLevel) {
         this.radiationLevel = radiationLevel;
     }
+
+    @Override
+    public String toString() {
+        return "Type: Hazardous liquid, Radiation level:" + radiationLevel + ", " + super.toString();
+    }
 }

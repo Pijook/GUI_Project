@@ -15,14 +15,11 @@ public class ShipController {
     }
 
     public void loadShips() throws IOException {
+        System.out.println("Loading ships...");
         File file = new File("ships.txt");
 
         if(!file.exists()){
             boolean created = file.createNewFile();
-            if(created){
-                PrintWriter writer = new PrintWriter(new FileWriter(file));
-                writer.print("---");
-            }
         }
 
         Scanner scanner = new Scanner(file);
@@ -51,13 +48,47 @@ public class ShipController {
                 break;
             }
         }
+        System.out.println("Loaded " + ships.size() + " ships!");
     }
 
-    public void saveShips(){
+    public void saveShips() throws IOException {
+        System.out.println("Saving ships...");
+        File file = new File("ships.txt");
 
+        if(file.exists()){
+            file.delete();
+            file.createNewFile();
+        }
+
+        PrintWriter printer = new PrintWriter(new FileWriter(file));
+        for(Ship ship : ships){
+            printer.println("---");
+            printer.println("ship: " + ship.getShipName());
+            printer.println("port: " + ship.getPort());
+            printer.println("from: " + ship.getFrom());
+            printer.println("to: " + ship.getTo());
+            printer.println("maxContainers: " + ship.getMaxContainers());
+            printer.println("maxContainersMass: " + ship.getMaxContainersMass());
+            printer.println("maxDangerousContainers: " + ship.getMaxDangerousContainers());
+            printer.println("maxHeavyContainers: " + ship.getMaxHeavyContainers());
+            printer.println("maxContainersWithElectricity: " + ship.getMaxContainersWithElectricity());
+        }
+
+        printer.println("...");
+        printer.close();
+        System.out.println("Saved ships!");
     }
 
     public List<Ship> getShips() {
         return ships;
+    }
+
+    public Ship getShip(String shipName){
+        for(Ship ship : ships){
+            if(ship.getShipName().equalsIgnoreCase(shipName)){
+                return ship;
+            }
+        }
+        return null;
     }
 }
