@@ -1,0 +1,22 @@
+START
+---
+ship: Kondzio
+port: Warszawa
+from: Warszawa
+to: Berlin
+maxContainers: 20
+maxContainersMass: 20000
+maxDangerousContainers: 3
+maxHeavyContainers: 4
+maxContainersWithElectricity: 1
+---
+ship: Quleqq
+port: Berlin
+from: Warszawa
+to: Berlin
+maxContainers: 20
+maxContainersMass: 20000
+maxDangerousContainers: 3
+maxHeavyContainers: 4
+maxContainersWithElectricity: 1
+...

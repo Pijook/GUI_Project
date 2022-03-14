@@ -2,9 +2,15 @@ package com.company.ship;
 
 import com.company.container.Container;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Ship {
+
+    private String shipName;
+    private String port;
+    private String from;
+    private String to;
 
     private Integer maxContainers;
     private Double maxContainersMass;
@@ -12,16 +18,52 @@ public class Ship {
     private Integer maxHeavyContainers;
     private Integer maxContainersWithElectricity;
 
-    private List<Container> dangerousContainers;
-    private List<Container> heavyContainers;
-    private List<Container> containersWithElectricity;
+    private List<Container> containers;
 
-    public Ship(Integer maxContainers, Double maxContainersMass, Integer maxDangerousContainers, Integer maxHeavyContainers, Integer maxContainersWithElectricity) {
+    public Ship(String shipName, String port, String from, String to, Integer maxContainers, Double maxContainersMass, Integer maxDangerousContainers, Integer maxHeavyContainers, Integer maxContainersWithElectricity) {
+        this.shipName = shipName;
+        this.port = port;
+        this.from = from;
+        this.to = to;
         this.maxContainers = maxContainers;
         this.maxContainersMass = maxContainersMass;
         this.maxDangerousContainers = maxDangerousContainers;
         this.maxHeavyContainers = maxHeavyContainers;
         this.maxContainersWithElectricity = maxContainersWithElectricity;
+
+        this.containers = new ArrayList<>();
+    }
+
+    public String getShipName() {
+        return shipName;
+    }
+
+    public void setShipName(String shipName) {
+        this.shipName = shipName;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
     }
 
     public Integer getMaxContainers() {
@@ -64,27 +106,26 @@ public class Ship {
         this.maxContainersWithElectricity = maxContainersWithElectricity;
     }
 
-    public List<Container> getDangerousContainers() {
-        return dangerousContainers;
+    public List<Container> getContainers() {
+        return containers;
     }
 
-    public void setDangerousContainers(List<Container> dangerousContainers) {
-        this.dangerousContainers = dangerousContainers;
+    public void setContainers(List<Container> containers) {
+        this.containers = containers;
     }
 
-    public List<Container> getHeavyContainers() {
-        return heavyContainers;
-    }
-
-    public void setHeavyContainers(List<Container> heavyContainers) {
-        this.heavyContainers = heavyContainers;
-    }
-
-    public List<Container> getContainersWithElectricity() {
-        return containersWithElectricity;
-    }
-
-    public void setContainersWithElectricity(List<Container> containersWithElectricity) {
-        this.containersWithElectricity = containersWithElectricity;
+    @Override
+    public String toString() {
+        return "Ship{" +
+                "shipName='" + shipName + '\'' +
+                ", port='" + port + '\'' +
+                ", from='" + from + '\'' +
+                ", to='" + to + '\'' +
+                ", maxContainers=" + maxContainers +
+                ", maxContainersMass=" + maxContainersMass +
+                ", maxDangerousContainers=" + maxDangerousContainers +
+                ", maxHeavyContainers=" + maxHeavyContainers +
+                ", maxContainersWithElectricity=" + maxContainersWithElectricity +
+                '}';
     }
 }

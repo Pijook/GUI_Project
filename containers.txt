@@ -1,0 +1,39 @@
+/
+containerID: 15046c46-5086-4e64-b81c-a19b21c8eb16
+mass: 20
+type: Normal
+/
+containerID: b3fc3434-4dcd-4027-88c8-a8eada6467ef
+mass: 30
+type: Cooling
+minVoltage: 200
+specialProtection: Ducktape
+/
+containerID: bb570bdb-85e2-4769-b83f-c821c238e330
+mass: 30
+type: Exploding
+explosionRadius: 10.0
+specialProtection: Gloves
+/
+containerID: 08c1916e-0fb8-4add-8b31-5bdf6a19fb64
+mass: 20
+type: Hazardous
+radiationLevel: 0.5
+specialProtection: Skeleton
+/
+containerID: fb25fcab-8fa3-406d-bcc3-332cb9403a1f
+mass: 10
+type: HazardousLiquid
+radiationLevel: 1.0
+maxCapacity: 75.0
+specialProtection: Skeleton
+/
+containerID: 58e41bdc-f07f-4bfb-a4e0-3242cc51a244
+mass: 50.0
+type: Heavy
+specialProtection: Ducktape
+/
+containerID: c731425a-d881-43b3-9481-a0fae93a1500
+mass: 100.0
+type: Liquid
+maxCapacity: 65.0
