@@ -1,6 +1,6 @@
 ---
-ship: Kondzio
-port: Warszawa
+ship: Quleqq
+port: Berlin
 from: Warszawa
 to: Berlin
 maxContainers: 20
@@ -9,8 +9,8 @@ maxDangerousContainers: 3
 maxHeavyContainers: 4
 maxContainersWithElectricity: 1
 ---
-ship: Quleqq
-port: Berlin
+ship: Kondzio
+port: Warszawa
 from: Warszawa
 to: Berlin
 maxContainers: 20

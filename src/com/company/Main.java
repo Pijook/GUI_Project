@@ -3,6 +3,9 @@ package com.company;
 import com.company.container.Container;
 import com.company.container.ContainerController;
 import com.company.container.exceptions.NotEnoughSpaceException;
+import com.company.container.exceptions.TooManyDangerousContainersException;
+import com.company.container.exceptions.TooManyElectricContainersException;
+import com.company.container.exceptions.TooManyHeavyContainersException;
 import com.company.ship.Ship;
 import com.company.ship.ShipController;
 
@@ -57,12 +60,23 @@ public class Main {
 
         shipController.loadShips();
         containerController.loadContainers();
+
+        try {
+            containerController.loadShippedContainers();
+        } catch (TooManyHeavyContainersException e) {
+            e.printStackTrace();
+        } catch (TooManyDangerousContainersException e) {
+            e.printStackTrace();
+        } catch (TooManyElectricContainersException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void saveData() throws IOException {
 
         shipController.saveShips();
         containerController.saveContainers();
+        containerController.saveShippedContainers();
 
     }
 

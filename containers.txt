@@ -33,7 +33,6 @@ type: Heavy
 specialProtection: Ducktape
 /
 containerID: c731425a-d881-43b3-9481-a0fae93a1500
-loadedOn: Kondzio
 mass: 100.0
 type: Liquid
 maxCapacity: 65.0

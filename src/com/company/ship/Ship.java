@@ -2,6 +2,9 @@ package com.company.ship;
 
 import com.company.container.*;
 import com.company.container.exceptions.NotEnoughSpaceException;
+import com.company.container.exceptions.TooManyElectricContainersException;
+import com.company.container.exceptions.TooManyDangerousContainersException;
+import com.company.container.exceptions.TooManyHeavyContainersException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,33 +38,36 @@ public class Ship {
         this.containers = new ArrayList<>();
     }
 
-    public void loadContainer(Container container, boolean force) throws NotEnoughSpaceException {
-        if(force){
-            containers.add(container);
-        }
-        else{
+    public void loadContainer(Container container, boolean force) throws NotEnoughSpaceException, TooManyHeavyContainersException, TooManyElectricContainersException, TooManyDangerousContainersException {
+        if (!force) {
             double loadedMass = 0.0;
             int dangerousContainers = 0;
             int electric = 0;
             int heavy = 0;
-            for(Container temp : containers){
+            for (Container temp : containers) {
                 loadedMass += temp.getMass();
 
-                if(temp instanceof Hazardous || temp instanceof ExplodingContainer){
+                if (temp instanceof Hazardous || temp instanceof ExplodingContainer) {
                     dangerousContainers++;
-                }
-                else if(temp instanceof CoolingContainer){
+                } else if (temp instanceof CoolingContainer) {
                     electric++;
-                }
-                else if(temp instanceof HeavyContainer){
+                } else if (temp instanceof HeavyContainer) {
                     heavy++;
                 }
             }
 
-            if(container.getMass() + loadedMass > maxContainersMass || containers.size() + 1 > maxContainers){
+            if (container.getMass() + loadedMass > maxContainersMass || containers.size() + 1 > maxContainers) {
                 throw new NotEnoughSpaceException();
+            } else if (dangerousContainers > maxDangerousContainers) {
+                throw new TooManyDangerousContainersException();
+            } else if (electric > maxContainersWithElectricity) {
+                throw new TooManyElectricContainersException();
+            } else if (heavy > maxHeavyContainers) {
+                throw new TooManyHeavyContainersException();
             }
+
         }
+        containers.add(container);
     }
 
     public String getShipName() {

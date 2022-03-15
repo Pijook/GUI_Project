@@ -2,12 +2,15 @@ package com.company.container;
 
 import com.company.Main;
 import com.company.container.exceptions.NotEnoughSpaceException;
+import com.company.container.exceptions.TooManyDangerousContainersException;
+import com.company.container.exceptions.TooManyElectricContainersException;
+import com.company.container.exceptions.TooManyHeavyContainersException;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Scanner;
-import java.util.UUID;
+import java.io.PrintWriter;
+import java.util.*;
 
 public class ContainerController {
 
@@ -17,6 +20,19 @@ public class ContainerController {
         containers = new HashMap<>();
     }
 
+    /**
+     * Loads created containers from containers.txt files
+     * Available containers types
+     * - Normal
+     * - Cooling
+     * - Exploding
+     * - Hazardous
+     * - HazardousLiquid
+     * - Heavy
+     * - Liquid
+     * @throws IOException
+     * @throws NotEnoughSpaceException
+     */
     public void loadContainers() throws IOException, NotEnoughSpaceException {
         System.out.println("Loading containers...");
 
@@ -35,15 +51,7 @@ public class ContainerController {
 
                 UUID containerID = UUID.fromString(scanner.nextLine().split(" ")[1]);
 
-                String lineMassOrShip = scanner.nextLine();
-                double mass;
-                if(lineMassOrShip.contains("loadedOn")){
-                    Main.getShipController().getShip(lineMassOrShip.split(" ")[1]).loadContainer(container, true);
-                    mass = Double.parseDouble(scanner.nextLine().split(" ")[1]);
-                }
-                else{
-                    mass = Double.parseDouble(lineMassOrShip.split(" ")[1]);
-                }
+                double mass = Double.parseDouble(scanner.nextLine().split(" ")[1]);
 
                 String type = scanner.nextLine().split(" ")[1];
 
@@ -100,9 +108,80 @@ public class ContainerController {
         System.out.println("Loaded " + containers.size() + " containers!");
     }
 
+    public void loadShippedContainers() throws
+            IOException,
+            NotEnoughSpaceException,
+            TooManyHeavyContainersException,
+            TooManyDangerousContainersException,
+            TooManyElectricContainersException {
 
-    public void saveContainers(){
+        File file = new File("shippedContainers.txt");
+
+        if(!file.exists()){
+            file.createNewFile();
+        }
+
+        Scanner scanner = new Scanner(file);
+
+        while(scanner.hasNext()){
+            String[] line = scanner.nextLine().split(" ");
+
+            UUID containerID = UUID.fromString(line[0].replace(":", ""));
+            String shipName = line[1];
+
+            Container container = containers.get(containerID);
+            container.setOnShip(shipName);
+
+            Main.getShipController().getShip(shipName).loadContainer(container, true);
+        }
+    }
+
+    public void saveShippedContainers() throws IOException {
+        File file = new File("shippedContainers.txt");
+
+        if(file.exists()){
+            file.delete();
+            file.createNewFile();
+        }
+
+        ArrayList<Container> containersToSave = new ArrayList<>();
+
+        for(Container container : containers.values()){
+            if(container.getOnShip() != null){
+                containersToSave.add(container);
+            }
+        }
+
+        Collections.sort(containersToSave, new Comparator<Container>() {
+            @Override
+            public int compare(Container o1, Container o2) {
+                return o1.getMass().compareTo(o2.getMass());
+            }
+        });
+
+        PrintWriter printer = new PrintWriter(new FileWriter(file));
+
+        for(Container container : containersToSave){
+            printer.println(container.getContainerID() + ": " + container.getOnShip());
+        }
+
+        printer.close();
+    }
+
+    public void saveContainers() throws IOException {
         System.out.println("Saving containers...");
+
+        File file = new File("containers.txt");
+
+        if(file.exists()){
+            file.delete();
+            file.createNewFile();
+        }
+
+        for(Container container : containers.values()){
+
+        }
+
         System.out.println("Saved containers!");
     }
 

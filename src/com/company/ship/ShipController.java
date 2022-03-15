@@ -61,6 +61,14 @@ public class ShipController {
         }
 
         PrintWriter printer = new PrintWriter(new FileWriter(file));
+
+        Collections.sort(ships, new Comparator<Ship>() {
+            @Override
+            public int compare(Ship o1, Ship o2) {
+                return o2.getShipName().compareTo(o1.getShipName());
+            }
+        });
+
         for(Ship ship : ships){
             printer.println("---");
             printer.println("ship: " + ship.getShipName());
