@@ -1,5 +1,9 @@
 package com.company.ship;
 
+import com.company.container.Container;
+import com.company.menu.Menu;
+import com.company.menu.Option;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,6 +16,36 @@ public class ShipController {
 
     public ShipController(){
         ships = new ArrayList<>();
+    }
+
+    public void openShipList(){
+        Menu menu = new Menu("Ships");
+
+        int i = 1;
+        for(Ship ship : ships){
+            menu.addOption(i, new Option(ship.getShipName(), () -> {
+                openShipMenu(ship);
+            }, false));
+        }
+
+        menu.open();
+    }
+
+    public void openShipMenu(Ship ship){
+        Menu menu = new Menu("Ship " + ship.getShipName());
+
+        menu.addOption(1, new Option("Show info", () -> {
+            System.out.println(ship);
+        }, false));
+
+        menu.addOption(2, new Option("Show containers", () -> {
+            for(Container container : ship.getContainers()){
+                System.out.println(container);
+                System.out.println("-------");
+            }
+        }, false));
+
+        menu.open();
     }
 
     public void loadShips() throws IOException {
@@ -85,6 +119,59 @@ public class ShipController {
         printer.println("...");
         printer.close();
         System.out.println("Saved ships!");
+    }
+
+    public void openShipCreator(){
+        System.out.println("===================");
+        System.out.println("Container creator");
+        System.out.println("===================");
+
+        Scanner scanner = new Scanner(System.in);
+
+        String shipName;
+        String port;
+        String from;
+        String to;
+
+        int maxContainers;
+        double maxContainersMass;
+        int maxDangerousContainers;
+        int maxHeavyContainers;
+        int maxContainersWithElectricity;
+
+        System.out.print("Ship name: ");
+        shipName = scanner.next();
+        System.out.print("Creation port: ");
+        port = scanner.next();
+        System.out.print("From: ");
+        from = scanner.next();
+        System.out.print("To: ");
+        to = scanner.next();
+
+        System.out.print("Max containers: ");
+        maxContainers = scanner.nextInt();
+        System.out.print("Max mass of containers: ");
+        maxContainersMass = scanner.nextDouble();
+        System.out.print("Max dangerous containers: ");
+        maxDangerousContainers = scanner.nextInt();
+        System.out.print("Max heavy containers: ");
+        maxHeavyContainers = scanner.nextInt();
+        System.out.print("Max containers with electricity: ");
+        maxContainersWithElectricity = scanner.nextInt();
+
+        ships.add(new Ship(
+                shipName,
+                port,
+                from,
+                to,
+                maxContainers,
+                maxContainersMass,
+                maxDangerousContainers,
+                maxHeavyContainers,
+                maxContainersWithElectricity
+        ));
+
+        System.out.println("Added new ship!");
     }
 
     public List<Ship> getShips() {

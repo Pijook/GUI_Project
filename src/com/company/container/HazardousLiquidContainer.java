@@ -19,6 +19,11 @@ public class HazardousLiquidContainer extends LiquidContainer implements Hazardo
 
     @Override
     public String toString() {
-        return "Type: Hazardous liquid, Radiation level:" + radiationLevel + ", " + super.toString();
+        return "type: LiquidHazardous\n" +
+                "containerID: " + getContainerID() + "\n" +
+                "mass: " + getMass() + "\n" +
+                "maxCapacity: " + getMaxCapacity() + "\n" +
+                "radiationLevel: " + getRadiationLevel() + "\n" +
+                "onShip: " + getOnShip();
     }
 }

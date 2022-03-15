@@ -4,4 +4,6 @@ public interface Hazardous {
 
     Double getRadiationLevel();
 
+    void setRadiationLevel(Double radiationLevel);
+
 }

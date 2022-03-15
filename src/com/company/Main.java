@@ -18,58 +18,27 @@ public class Main {
 
     private static Menu mainMenu;
 
-    public static void main(String[] args) throws IOException, NotEnoughSpaceException {
+    public static void main(String[] args) throws IOException, NotEnoughSpaceException, TooManyHeavyContainersException, TooManyDangerousContainersException, TooManyElectricContainersException {
         loadData();
-
-        /*Scanner scanner = new Scanner(System.in);
-
-        int option = -1;
-        while(option != 0){
-            displayMainMenu();
-            option = scanner.nextInt();
-            switch (option){
-                case 5 -> {
-                    for(Ship ship : shipController.getShips()){
-                        System.out.println(ship);
-                    }
-                }
-                case 6 -> {
-                    for(Container container : containerController.getContainers().values()){
-                        System.out.println(container);
-                    }
-                }
-            }
-        }*/
 
         mainMenu.open();
 
         saveData();
     }
 
-    /*private static void displayMainMenu(){
-        System.out.println("Choose option:");
-        System.out.println("1. Create new ship");
-        System.out.println("2. Create new container");
-        System.out.println("3. Load container on ship");
-        System.out.println("4. Unload container from ship");
-        System.out.println("5. Show ships");
-        System.out.println("6. Show containers");
-        System.out.println("0. Exit");
-    }*/
-
     private static void setupMenu(){
         mainMenu = new Menu("Main Menu");
 
         mainMenu.addOption(1, new Option("Create new ship", () -> {
-
-        }, true));
+            shipController.openShipCreator();
+        }, false));
 
         mainMenu.addOption(2, new Option("Create new container", () -> {
             containerController.openCreateContainerMenu();
         }, true));
 
         mainMenu.addOption(3, new Option("Show ships", () -> {
-
+            shipController.openShipList();
         }, false));
 
         mainMenu.addOption(4, new Option("Show containers", () -> {
@@ -77,22 +46,12 @@ public class Main {
         }, false));
     }
 
-    private static void loadData() throws IOException, NotEnoughSpaceException {
+    private static void loadData() throws IOException, NotEnoughSpaceException, TooManyHeavyContainersException, TooManyDangerousContainersException, TooManyElectricContainersException {
         shipController = new ShipController();
         containerController = new ContainerController();
 
         shipController.loadShips();
         containerController.loadContainers();
-
-        try {
-            containerController.loadShippedContainers();
-        } catch (TooManyHeavyContainersException e) {
-            e.printStackTrace();
-        } catch (TooManyDangerousContainersException e) {
-            e.printStackTrace();
-        } catch (TooManyElectricContainersException e) {
-            e.printStackTrace();
-        }
 
         setupMenu();
     }
@@ -101,7 +60,7 @@ public class Main {
 
         shipController.saveShips();
         containerController.saveContainers();
-        containerController.saveShippedContainers();
+        //containerController.saveShippedContainers();
 
     }
 

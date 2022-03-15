@@ -19,6 +19,10 @@ public class LiquidContainer extends Container {
 
     @Override
     public String toString() {
-        return "Type: Liquid, Max capacity: " + maxCapacity + ", " + super.toString();
+        return "type: Liquid\n" +
+                "containerID: " + getContainerID() + "\n" +
+                "mass: " + getMass() + "\n" +
+                "maxCapacity: " + getMaxCapacity() + "\n" +
+                "onShip: " + getOnShip();
     }
 }

@@ -19,6 +19,11 @@ public class HazardousHeavyContainer extends HeavyContainer implements Hazardous
 
     @Override
     public String toString() {
-        return "Type: Hazardous, Radiation level: " + radiationLevel + ", " + super.toString();
+        return "type: HeavyHazardous\n" +
+                "containerID: " + getContainerID() + "\n" +
+                "mass: " + getMass() + "\n" +
+                "specialProtection: " + getSpecialProtection() + "\n" +
+                "radiationLevel: " + getRadiationLevel() + "\n" +
+                "onShip: " + getOnShip();
     }
 }

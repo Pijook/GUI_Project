@@ -19,6 +19,11 @@ public class CoolingContainer extends HeavyContainer {
 
     @Override
     public String toString() {
-        return "Type: Cooling, Min voltage: " + minVoltage + ", " + super.toString();
+        return "type: Cooling\n" +
+                "containerID: " + getContainerID() + "\n" +
+                "mass: " + getMass() + "\n" +
+                "minVoltage: " + getMinVoltage() + "\n" +
+                "specialProtection: " + getSpecialProtection() + "\n" +
+                "onShip: " + getOnShip();
     }
 }

@@ -121,7 +121,12 @@ public class ContainerController {
 
     public void openContainerEditor(String containerType){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Container mass");
+
+        System.out.println("===================");
+        System.out.println("Container creator");
+        System.out.println("===================");
+
+        System.out.print("Container mass: ");
         double mass = scanner.nextDouble();
 
         Container container = null;
@@ -209,7 +214,7 @@ public class ContainerController {
      * @throws IOException Thrown when couldn't create or find file
      * @throws NotEnoughSpaceException Thrown when ship is overloaded
      */
-    public void loadContainers() throws IOException, NotEnoughSpaceException {
+    public void loadContainers() throws IOException, NotEnoughSpaceException, TooManyHeavyContainersException, TooManyDangerousContainersException, TooManyElectricContainersException {
         System.out.println("Loading containers...");
 
         File file = new File("containers.txt");
@@ -225,59 +230,22 @@ public class ContainerController {
             if(line.equalsIgnoreCase("/")){
                 Container container = null;
 
-                UUID containerID = UUID.fromString(scanner.nextLine().split(" ")[1]);
-
-                double mass = Double.parseDouble(scanner.nextLine().split(" ")[1]);
-
-                String type = scanner.nextLine().split(" ")[1];
-
-                switch (type){
-                    case "Normal" -> {
-                        //Just normal container
-                        //Stay chill and be cool B)
-                        container = new Container(mass);
+                String text = "";
+                int i = 0;
+                while(!text.equalsIgnoreCase("/") && scanner.hasNext()){
+                    if(i > 0){
+                        text += ";";
                     }
-                    case "Cooling" -> {
-                        int minVoltage = Integer.parseInt(scanner.nextLine().split(" ")[1]);
-                        String specialProtection = scanner.nextLine().split(" ")[1];
-
-                        container = new CoolingContainer(mass, specialProtection, minVoltage);
-                    }
-                    case "Exploding" -> {
-                        double explosionRadius = Double.parseDouble(scanner.nextLine().split(" ")[1]);
-                        String specialProtection = scanner.nextLine().split(" ")[1];
-
-                        container = new ExplodingContainer(mass, specialProtection, explosionRadius);
-                    }
-                    case "Hazardous" -> {
-                        double radiationLevel = Double.parseDouble(scanner.nextLine().split(" ")[1]);
-                        String specialProtection = scanner.nextLine().split(" ")[1];
-
-                        container = new HazardousHeavyContainer(mass, specialProtection, radiationLevel);
-                    }
-                    case "HazardousLiquid" -> {
-                        double radiationLevel = Double.parseDouble(scanner.nextLine().split(" ")[1]);
-                        double maxCapacity = Double.parseDouble(scanner.nextLine().split(" ")[1]);
-
-                        container = new HazardousLiquidContainer(mass, maxCapacity,radiationLevel);
-                    }
-                    case "Heavy" -> {
-                        String specialProtection = scanner.nextLine().split(" ")[1];
-
-                        container = new HeavyContainer(mass, specialProtection);
-                    }
-                    case "Liquid" -> {
-                        double maxCapacity = Double.parseDouble(scanner.nextLine().split(" ")[1]);
-
-                        container = new LiquidContainer(mass, maxCapacity);
-                    }
+                    text += scanner.nextLine();
+                    i++;
                 }
 
-                if(container != null){
-                    container.setContainerID(containerID);
-                }
+                container = stringToContainer(text.split(";"));
 
-                containers.put(containerID, container);
+                containers.put(container.getContainerID(), container);
+                if(container.isLoadedOnShip()){
+                    Main.getShipController().getShip(container.getOnShip()).loadContainer(container, true);
+                }
             }
         }
 
@@ -292,8 +260,8 @@ public class ContainerController {
      * @throws TooManyDangerousContainersException Thrown when ship is overloaded with dangerous containers
      * @throws TooManyElectricContainersException Thrown when ship is overloaded with liquid containers
      */
-    public void loadShippedContainers() throws
-            IOException,
+    public void loadShippedContainers(){
+      /*      IOException,
             NotEnoughSpaceException,
             TooManyHeavyContainersException,
             TooManyDangerousContainersException,
@@ -317,7 +285,7 @@ public class ContainerController {
             container.setOnShip(shipName);
 
             Main.getShipController().getShip(shipName).loadContainer(container, true);
-        }
+        }*/
     }
 
     /**
@@ -325,7 +293,7 @@ public class ContainerController {
      * @throws IOException Thrown when couldn't create or find file
      */
     public void saveShippedContainers() throws IOException {
-        File file = new File("shippedContainers.txt");
+        /*File file = new File("shippedContainers.txt");
 
         if(file.exists()){
             file.delete();
@@ -353,7 +321,7 @@ public class ContainerController {
             printer.println(container.getContainerID() + ": " + container.getOnShip());
         }
 
-        printer.close();
+        printer.close();*/
     }
 
     /**
@@ -370,11 +338,73 @@ public class ContainerController {
             file.createNewFile();
         }
 
-        for(Container container : containers.values()){
+        PrintWriter printer = new PrintWriter(new FileWriter(file));
 
+        for(Container container : containers.values()){
+            printer.println("/");
+            printer.println(container.toString());
         }
 
+        printer.close();
+
         System.out.println("Saved containers!");
+    }
+
+    private Container stringToContainer(String[] lines){
+        String containerType = lines[0].split(" ")[1];
+        UUID containerID = UUID.fromString(lines[1].split(" ")[1]);
+        double mass = Double.parseDouble(lines[2].split(" ")[1]);
+
+        Container container = null;
+        switch (containerType){
+            case "Normal" -> {
+                //Just normal container
+                //Stay chill and be cool B)
+                container = new Container(mass);
+            }
+            case "Cooling" -> {
+                int minVoltage = Integer.parseInt(lines[3].split(" ")[1]);
+                String specialProtection = lines[4].split(" ")[1];
+
+                container = new CoolingContainer(mass, specialProtection, minVoltage);
+            }
+            case "Exploding" -> {
+                double explosionRadius = Double.parseDouble(lines[3].split(" ")[1]);
+                String specialProtection = lines[4].split(" ")[1];
+
+                container = new ExplodingContainer(mass, specialProtection, explosionRadius);
+            }
+            case "HeavyHazardous" -> {
+                String specialProtection = lines[3].split(" ")[1];
+                double radiationLevel = Double.parseDouble(lines[4].split(" ")[1]);
+
+                container = new HazardousHeavyContainer(mass, specialProtection, radiationLevel);
+            }
+            case "HazardousLiquid" -> {
+                double maxCapacity = Double.parseDouble(lines[3].split(" ")[1]);
+                double radiationLevel = Double.parseDouble(lines[4].split(" ")[1]);
+
+                container = new HazardousLiquidContainer(mass, maxCapacity,radiationLevel);
+            }
+            case "Heavy" -> {
+                String specialProtection = lines[3].split(" ")[1];
+
+                container = new HeavyContainer(mass, specialProtection);
+            }
+            case "Liquid" -> {
+                double maxCapacity = Double.parseDouble(lines[3].split(" ")[1]);
+
+                container = new LiquidContainer(mass, maxCapacity);
+            }
+        }
+
+        if(container != null){
+            if(lines[lines.length - 1].contains("onShip")){
+                container.setOnShip(lines[lines.length - 1].split(" ")[1]);
+            }
+            container.setContainerID(containerID);
+        }
+        return container;
     }
 
     public HashMap<UUID, Container> getContainers() {

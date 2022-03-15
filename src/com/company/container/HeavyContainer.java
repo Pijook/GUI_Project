@@ -19,6 +19,10 @@ public class HeavyContainer extends Container {
 
     @Override
     public String toString() {
-        return "Type: Heavy, Special protection: " + specialProtection + ", " + super.toString();
+        return "type: Heavy\n" +
+                "containerID: " + getContainerID() + "\n" +
+                "mass: " + getMass() + "\n" +
+                "specialProtection: " + getSpecialProtection() + "\n" +
+                "onShip: " + getOnShip();
     }
 }

@@ -19,6 +19,11 @@ public class ExplodingContainer extends HeavyContainer {
 
     @Override
     public String toString() {
-        return "Type: Exploding, Explosion radius: " + explosionRadius + ", " + super.toString();
+        return "type: Exploding\n" +
+                "containerID: " + getContainerID() + "\n" +
+                "mass: " + getMass() + "\n" +
+                "explosionRadius: " + getExplosionRadius() + "\n" +
+                "specialProtection: " + getSpecialProtection() + "\n" +
+                "onShip: " + getOnShip();
     }
 }
