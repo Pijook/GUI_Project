@@ -197,7 +197,7 @@ public class ContainerController {
 
         if(container != null){
             containers.put(container.getContainerID(), container);
-            System.out.print("Created new container!");
+            System.out.println("Created new container!");
         }
     }
 
@@ -253,78 +253,6 @@ public class ContainerController {
     }
 
     /**
-     * Loads shipped containers from shippedContainers.txt
-     * @throws IOException Thrown when couldn't create or find file
-     * @throws NotEnoughSpaceException Thrown when ship is overloaded
-     * @throws TooManyHeavyContainersException Thrown when ship is overloaded with heavy containers
-     * @throws TooManyDangerousContainersException Thrown when ship is overloaded with dangerous containers
-     * @throws TooManyElectricContainersException Thrown when ship is overloaded with liquid containers
-     */
-    public void loadShippedContainers(){
-      /*      IOException,
-            NotEnoughSpaceException,
-            TooManyHeavyContainersException,
-            TooManyDangerousContainersException,
-            TooManyElectricContainersException {
-
-        File file = new File("shippedContainers.txt");
-
-        if(!file.exists()){
-            file.createNewFile();
-        }
-
-        Scanner scanner = new Scanner(file);
-
-        while(scanner.hasNext()){
-            String[] line = scanner.nextLine().split(" ");
-
-            UUID containerID = UUID.fromString(line[0].replace(":", ""));
-            String shipName = line[1];
-
-            Container container = containers.get(containerID);
-            container.setOnShip(shipName);
-
-            Main.getShipController().getShip(shipName).loadContainer(container, true);
-        }*/
-    }
-
-    /**
-     * Saves shipped containers in given order
-     * @throws IOException Thrown when couldn't create or find file
-     */
-    public void saveShippedContainers() throws IOException {
-        /*File file = new File("shippedContainers.txt");
-
-        if(file.exists()){
-            file.delete();
-            file.createNewFile();
-        }
-
-        ArrayList<Container> containersToSave = new ArrayList<>();
-
-        for(Container container : containers.values()){
-            if(container.getOnShip() != null){
-                containersToSave.add(container);
-            }
-        }
-
-        Collections.sort(containersToSave, new Comparator<Container>() {
-            @Override
-            public int compare(Container o1, Container o2) {
-                return o1.getMass().compareTo(o2.getMass());
-            }
-        });
-
-        PrintWriter printer = new PrintWriter(new FileWriter(file));
-
-        for(Container container : containersToSave){
-            printer.println(container.getContainerID() + ": " + container.getOnShip());
-        }
-
-        printer.close();*/
-    }
-
-    /**
      * Saves all created containers
      * @throws IOException Thrown when couldn't create or find file
      */
@@ -337,6 +265,15 @@ public class ContainerController {
             file.delete();
             file.createNewFile();
         }
+
+        List<Container> containerList = new ArrayList<>(containers.values());
+
+        Collections.sort(containerList, new Comparator<Container>() {
+            @Override
+            public int compare(Container o1, Container o2) {
+                return o1.getMass().compareTo(o2.getMass());
+            }
+        });
 
         PrintWriter printer = new PrintWriter(new FileWriter(file));
 
@@ -400,9 +337,12 @@ public class ContainerController {
 
         if(container != null){
             if(lines[lines.length - 1].contains("onShip")){
-                container.setOnShip(lines[lines.length - 1].split(" ")[1]);
+                String shipName = lines[lines.length - 1].split(" ")[1];
+                if(!shipName.equalsIgnoreCase("null")){
+                    container.setOnShip(lines[lines.length - 1].split(" ")[1]);
+                }
+                container.setContainerID(containerID);
             }
-            container.setContainerID(containerID);
         }
         return container;
     }

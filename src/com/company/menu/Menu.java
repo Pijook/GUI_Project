@@ -19,16 +19,19 @@ public class Menu {
 
     public void open(){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("----------------------");
-        System.out.println(menuTitle);
-        System.out.println("----------------------");
 
         int selectedOption = -1;
         while(selectedOption != 0){
+            System.out.println("");
+            System.out.println("----------------------");
+            System.out.println("   " + menuTitle + "   ");
+            System.out.println("----------------------");
+            System.out.println("");
             for(int number : options.keySet()){
                 System.out.println(number + ". " + options.get(number).getOptionName());
             }
             System.out.println("0. Exit");
+            System.out.println("");
             System.out.print("Choose option: ");
 
             selectedOption = scanner.nextInt();

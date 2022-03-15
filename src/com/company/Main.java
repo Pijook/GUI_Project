@@ -35,7 +35,7 @@ public class Main {
 
         mainMenu.addOption(2, new Option("Create new container", () -> {
             containerController.openCreateContainerMenu();
-        }, true));
+        }, false));
 
         mainMenu.addOption(3, new Option("Show ships", () -> {
             shipController.openShipList();
@@ -44,6 +44,8 @@ public class Main {
         mainMenu.addOption(4, new Option("Show containers", () -> {
             containerController.openContainersListMenu();
         }, false));
+
+        mainMenu.addOption(5, new Option("Save", Main::saveData, false));
     }
 
     private static void loadData() throws IOException, NotEnoughSpaceException, TooManyHeavyContainersException, TooManyDangerousContainersException, TooManyElectricContainersException {
@@ -56,10 +58,15 @@ public class Main {
         setupMenu();
     }
 
-    private static void saveData() throws IOException {
+    private static void saveData(){
 
-        shipController.saveShips();
-        containerController.saveContainers();
+        try{
+            shipController.saveShips();
+            containerController.saveContainers();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
         //containerController.saveShippedContainers();
 
     }

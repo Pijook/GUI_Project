@@ -39,9 +39,18 @@ public class ShipController {
         }, false));
 
         menu.addOption(2, new Option("Show containers", () -> {
-            for(Container container : ship.getContainers()){
-                System.out.println(container);
-                System.out.println("-------");
+            System.out.println("----------------------");
+            System.out.println("Containers on " + ship.getShipName());
+            System.out.println("----------------------");
+
+            if(ship.getContainers().size() > 0){
+                for(Container container : ship.getContainers()){
+                    System.out.println(container);
+                    System.out.println("----------------------");
+                }
+            }
+            else{
+                System.out.println("Ship currently is full unloaded!");
             }
         }, false));
 
@@ -123,7 +132,7 @@ public class ShipController {
 
     public void openShipCreator(){
         System.out.println("===================");
-        System.out.println("Container creator");
+        System.out.println("Ship creator");
         System.out.println("===================");
 
         Scanner scanner = new Scanner(System.in);
