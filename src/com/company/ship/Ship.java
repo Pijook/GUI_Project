@@ -68,6 +68,12 @@ public class Ship {
 
         }
         containers.add(container);
+        container.setOnShip(shipName);
+    }
+
+    public void unLoadContainer(Container container){
+        containers.remove(container);
+        container.setOnShip(null);
     }
 
     public String getShipName() {

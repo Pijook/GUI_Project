@@ -40,6 +40,14 @@ public class Container {
 
     @Override
     public String toString() {
-        return "ID:" + containerID + ", Mass:" + mass;
+        String text = "ID:" + containerID + ", Mass:" + mass;
+        if(onShip != null){
+            text += " Loaded on: " + getOnShip();
+        }
+        return text;
+    }
+
+    public boolean isLoadedOnShip(){
+        return onShip != null;
     }
 }

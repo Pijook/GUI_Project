@@ -1,10 +1,10 @@
 package com.company.container;
 
-public class HazardousContainer extends HeavyContainer implements Hazardous {
+public class HazardousHeavyContainer extends HeavyContainer implements Hazardous {
 
     private Double radiationLevel;
 
-    public HazardousContainer(Double mass, String specialProtection, Double radiationLevel) {
+    public HazardousHeavyContainer(Double mass, String specialProtection, Double radiationLevel) {
         super(mass, specialProtection);
         this.radiationLevel = radiationLevel;
     }
