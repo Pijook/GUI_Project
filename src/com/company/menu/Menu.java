@@ -34,7 +34,15 @@ public class Menu {
             System.out.println("");
             System.out.print("Choose option: ");
 
-            selectedOption = scanner.nextInt();
+
+            try{
+                String text = scanner.nextLine();
+                selectedOption = Integer.parseInt(text);
+            }
+            catch (NumberFormatException e){
+                System.out.println("Enter valid option!");
+                continue;
+            }
 
             if(options.containsKey(selectedOption)){
                 Option option = options.get(selectedOption);

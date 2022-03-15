@@ -142,12 +142,6 @@ public class ShipController {
         String from;
         String to;
 
-        int maxContainers;
-        double maxContainersMass;
-        int maxDangerousContainers;
-        int maxHeavyContainers;
-        int maxContainersWithElectricity;
-
         System.out.print("Ship name: ");
         shipName = scanner.next();
         System.out.print("Creation port: ");
@@ -157,16 +151,62 @@ public class ShipController {
         System.out.print("To: ");
         to = scanner.next();
 
-        System.out.print("Max containers: ");
-        maxContainers = scanner.nextInt();
-        System.out.print("Max mass of containers: ");
-        maxContainersMass = scanner.nextDouble();
-        System.out.print("Max dangerous containers: ");
-        maxDangerousContainers = scanner.nextInt();
-        System.out.print("Max heavy containers: ");
-        maxHeavyContainers = scanner.nextInt();
-        System.out.print("Max containers with electricity: ");
-        maxContainersWithElectricity = scanner.nextInt();
+        int maxContainers = -1;
+        double maxContainersMass = -1;
+        int maxDangerousContainers = -1;
+        int maxHeavyContainers = -1;
+        int maxContainersWithElectricity = -1;
+
+        while(maxContainers <= 0){
+            try{
+                System.out.print("Max containers: ");
+                maxContainers = Integer.parseInt(scanner.next());
+            }
+            catch (NumberFormatException e){
+                System.out.println("Enter valid number!");
+            }
+        }
+
+        while(maxContainersMass <= 0){
+
+            try{
+                System.out.print("Max mass of containers: ");
+                maxContainersMass = Double.parseDouble(scanner.next());
+            }
+            catch (NumberFormatException e){
+                System.out.println("Enter valid number!");
+            }
+        }
+
+        while(maxDangerousContainers < 0){
+            try{
+                System.out.print("Max dangerous containers: ");
+                maxDangerousContainers = Integer.parseInt(scanner.next());
+            }
+            catch (NumberFormatException e){
+                System.out.println("Enter valid number!");
+            }
+        }
+
+        while(maxHeavyContainers < 0){
+            try{
+                System.out.print("Max heavy containers: ");
+                maxHeavyContainers = Integer.parseInt(scanner.next());
+            }
+            catch (NumberFormatException e){
+                System.out.println("Enter valid number!");
+            }
+        }
+
+        while(maxContainersWithElectricity < 0){
+            try{
+                System.out.print("Max containers with electricity: ");
+                maxContainersWithElectricity = Integer.parseInt(scanner.next());
+            }
+            catch (NumberFormatException e){
+                System.out.println("Enter valid number!");
+            }
+        }
 
         ships.add(new Ship(
                 shipName,

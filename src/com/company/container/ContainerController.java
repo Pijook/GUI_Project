@@ -268,7 +268,7 @@ public class ContainerController {
 
         List<Container> containerList = new ArrayList<>(containers.values());
 
-        Collections.sort(containerList, new Comparator<Container>() {
+        containerList.sort(new Comparator<Container>() {
             @Override
             public int compare(Container o1, Container o2) {
                 return o1.getMass().compareTo(o2.getMass());

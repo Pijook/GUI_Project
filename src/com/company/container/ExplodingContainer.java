@@ -1,11 +1,15 @@
 package com.company.container;
 
-public class ExplodingContainer extends HeavyContainer {
+import com.company.container.containerTypes.Heavy;
 
-    private Double explosionRadius;
+public class ExplodingContainer extends Container implements Heavy {
 
-    public ExplodingContainer(Double mass, String specialProtection, Double explosionRadius) {
-        super(mass, specialProtection);
+    private double explosionRadius;
+    private String specialProtection;
+
+    public ExplodingContainer(double mass, String specialProtection, Double explosionRadius) {
+        super(mass);
+        this.specialProtection = specialProtection;
         this.explosionRadius = explosionRadius;
     }
 
@@ -13,8 +17,18 @@ public class ExplodingContainer extends HeavyContainer {
         return explosionRadius;
     }
 
-    public void setExplosionRadius(Double explosionRadius) {
+    public void setExplosionRadius(double explosionRadius) {
         this.explosionRadius = explosionRadius;
+    }
+
+    @Override
+    public String getSpecialProtection() {
+        return specialProtection;
+    }
+
+    @Override
+    public void setSpecialProtection(String specialProtection) {
+        this.specialProtection = specialProtection;
     }
 
     @Override
@@ -26,4 +40,5 @@ public class ExplodingContainer extends HeavyContainer {
                 "specialProtection: " + getSpecialProtection() + "\n" +
                 "onShip: " + getOnShip();
     }
+
 }

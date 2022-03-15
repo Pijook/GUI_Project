@@ -1,6 +1,7 @@
 package com.company.ship;
 
 import com.company.container.*;
+import com.company.container.containerTypes.Hazardous;
 import com.company.container.exceptions.NotEnoughSpaceException;
 import com.company.container.exceptions.TooManyElectricContainersException;
 import com.company.container.exceptions.TooManyDangerousContainersException;
@@ -159,14 +160,14 @@ public class Ship {
     @Override
     public String toString() {
         return "Ship " +
-                "Name: " + shipName + '\'' +
-                "Port: " + port + '\'' +
-                "From: " + from + '\'' +
-                "To: " + to + '\'' +
-                "Max Containers: " + maxContainers +
-                "Max containers mass:" + maxContainersMass +
-                "Max dangerous containers:" + maxDangerousContainers +
-                "Max heavy containers:" + maxHeavyContainers +
-                "Max containers with electricity:" + maxContainersWithElectricity;
+                "Name: " + shipName + "\n" +
+                "Port: " + port + "\n" +
+                "From: " + from + "\n" +
+                "To: " + to + "\n" +
+                "Max Containers: " + maxContainers + "\n" +
+                "Max containers mass: " + maxContainersMass + "\n" +
+                "Max dangerous containers: " + maxDangerousContainers + "\n" +
+                "Max heavy containers: " + maxHeavyContainers + "\n" +
+                "Max containers with electricity: " + maxContainersWithElectricity;
     }
 }

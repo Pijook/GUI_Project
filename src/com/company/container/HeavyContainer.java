@@ -1,18 +1,22 @@
 package com.company.container;
 
-public class HeavyContainer extends Container {
+import com.company.container.containerTypes.Heavy;
+
+public class HeavyContainer extends Container implements Heavy {
 
     private String specialProtection;
 
-    public HeavyContainer(Double mass, String specialProtection) {
+    public HeavyContainer(double mass, String specialProtection) {
         super(mass);
         this.specialProtection = specialProtection;
     }
 
+    @Override
     public String getSpecialProtection() {
         return specialProtection;
     }
 
+    @Override
     public void setSpecialProtection(String specialProtection) {
         this.specialProtection = specialProtection;
     }
@@ -25,4 +29,5 @@ public class HeavyContainer extends Container {
                 "specialProtection: " + getSpecialProtection() + "\n" +
                 "onShip: " + getOnShip();
     }
+
 }

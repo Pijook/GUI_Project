@@ -1,18 +1,22 @@
 package com.company.container;
 
-public class LiquidContainer extends Container {
+import com.company.container.containerTypes.Liquid;
+
+public class LiquidContainer extends Container implements Liquid {
 
     private double maxCapacity;
 
-    public LiquidContainer(Double mass, double maxCapacity) {
+    public LiquidContainer(double mass, double maxCapacity) {
         super(mass);
         this.maxCapacity = maxCapacity;
     }
 
+    @Override
     public double getMaxCapacity() {
         return maxCapacity;
     }
 
+    @Override
     public void setMaxCapacity(double maxCapacity) {
         this.maxCapacity = maxCapacity;
     }

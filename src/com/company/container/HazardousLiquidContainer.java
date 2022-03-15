@@ -1,20 +1,37 @@
 package com.company.container;
 
-public class HazardousLiquidContainer extends LiquidContainer implements Hazardous {
+import com.company.container.containerTypes.Hazardous;
+import com.company.container.containerTypes.Liquid;
 
-    private Double radiationLevel;
+public class HazardousLiquidContainer extends Container implements Hazardous, Liquid {
 
-    public HazardousLiquidContainer(Double mass, double maxCapacity, Double radiationLevel) {
-        super(mass, maxCapacity);
+    private double radiationLevel;
+    private double maxCapacity;
+
+    public HazardousLiquidContainer(double mass, double maxCapacity, Double radiationLevel) {
+        super(mass);
         this.radiationLevel = radiationLevel;
+        this.maxCapacity = maxCapacity;
     }
 
-    public Double getRadiationLevel() {
+    @Override
+    public double getRadiationLevel() {
         return radiationLevel;
     }
 
-    public void setRadiationLevel(Double radiationLevel) {
+    @Override
+    public void setRadiationLevel(double radiationLevel) {
         this.radiationLevel = radiationLevel;
+    }
+
+    @Override
+    public double getMaxCapacity() {
+        return maxCapacity;
+    }
+
+    @Override
+    public void setMaxCapacity(double maxCapacity) {
+        this.maxCapacity = maxCapacity;
     }
 
     @Override
@@ -26,4 +43,6 @@ public class HazardousLiquidContainer extends LiquidContainer implements Hazardo
                 "radiationLevel: " + getRadiationLevel() + "\n" +
                 "onShip: " + getOnShip();
     }
+
+
 }

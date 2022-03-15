@@ -1,20 +1,37 @@
 package com.company.container;
 
-public class HazardousHeavyContainer extends HeavyContainer implements Hazardous {
+import com.company.container.containerTypes.Hazardous;
+import com.company.container.containerTypes.Heavy;
 
-    private Double radiationLevel;
+public class HazardousHeavyContainer extends Container implements Hazardous, Heavy {
 
-    public HazardousHeavyContainer(Double mass, String specialProtection, Double radiationLevel) {
-        super(mass, specialProtection);
+    private double radiationLevel;
+    private String specialProtection;
+
+    public HazardousHeavyContainer(double mass, String specialProtection, double radiationLevel) {
+        super(mass);
+        this.specialProtection = specialProtection;
         this.radiationLevel = radiationLevel;
     }
 
-    public Double getRadiationLevel() {
+    @Override
+    public double getRadiationLevel() {
         return radiationLevel;
     }
 
-    public void setRadiationLevel(Double radiationLevel) {
+    @Override
+    public void setRadiationLevel(double radiationLevel) {
         this.radiationLevel = radiationLevel;
+    }
+
+    @Override
+    public String getSpecialProtection() {
+        return specialProtection;
+    }
+
+    @Override
+    public void setSpecialProtection(String specialProtection) {
+        this.specialProtection = specialProtection;
     }
 
     @Override

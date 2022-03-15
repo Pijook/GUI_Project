@@ -1,11 +1,15 @@
 package com.company.container;
 
-public class CoolingContainer extends HeavyContainer {
+import com.company.container.containerTypes.Heavy;
+
+public class CoolingContainer extends Container implements Heavy {
 
     private double minVoltage;
+    private String specialProtection;
 
-    public CoolingContainer(Double mass, String specialProtection, double minVoltage) {
-        super(mass, specialProtection);
+    public CoolingContainer(double mass, String specialProtection, double minVoltage) {
+        super(mass);
+        this.specialProtection = specialProtection;
         this.minVoltage = minVoltage;
     }
 
@@ -18,6 +22,16 @@ public class CoolingContainer extends HeavyContainer {
     }
 
     @Override
+    public String getSpecialProtection() {
+        return specialProtection;
+    }
+
+    @Override
+    public void setSpecialProtection(String specialProtection) {
+        this.specialProtection = specialProtection;
+    }
+
+    @Override
     public String toString() {
         return "type: Cooling\n" +
                 "containerID: " + getContainerID() + "\n" +
@@ -26,4 +40,6 @@ public class CoolingContainer extends HeavyContainer {
                 "specialProtection: " + getSpecialProtection() + "\n" +
                 "onShip: " + getOnShip();
     }
+
+
 }

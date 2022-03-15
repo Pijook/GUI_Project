@@ -8,7 +8,7 @@ public class Container {
     private Double mass;
     private String onShip;
 
-    public Container(Double mass){
+    public Container(double mass){
         this.containerID = UUID.randomUUID();
         this.mass = mass;
         this.onShip = null;
