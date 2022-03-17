@@ -76,7 +76,6 @@ public class Warehouse extends Thread {
         int i = 1;
         for(StoredContainer container : storedContainers){
             menu.addOption(i, new Option(container.getContainer().getContainerID().toString(), () -> {
-                //Main.getContainerController().openContainerMenu(container.getContainer());
                 container.getContainer().openContainerMenu();
             }, true));
         }

@@ -44,19 +44,15 @@ public class Main {
             shipController.openShipList();
         }, false));
 
-       /* mainMenu.addOption(4, new Option("Show containers", () -> {
-            containerController.openContainersListMenu();
-        }, false));*/
-
-        mainMenu.addOption(5, new Option("Manage warehouse", () -> {
+        mainMenu.addOption(4, new Option("Manage warehouse", () -> {
             warehouse.openWarehouseMenu();
         }, false));
 
-        mainMenu.addOption(6, new Option("Show current date", () -> {
+        mainMenu.addOption(5, new Option("Show current date", () -> {
             portTime.showCurrentDate();
         }, false));
 
-        mainMenu.addOption(7, new Option("Save", Main::saveData, false));
+        mainMenu.addOption(6, new Option("Save", Main::saveData, false));
     }
 
     private static void loadData() {

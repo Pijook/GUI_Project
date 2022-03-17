@@ -18,7 +18,7 @@ import java.util.*;
 public class ContainerController {
 
     public ContainerController(){
-        //containers = new HashMap<>();
+
     }
 
     public void openCreateContainerMenu(){
@@ -203,7 +203,6 @@ public class ContainerController {
 
                 container = stringToContainer(text.split(";"));
 
-                //containers.put(container.getContainerID(), container);
                 amount++;
                 if(container.isLoadedOnShip()){
                     try {
