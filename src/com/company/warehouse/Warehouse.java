@@ -78,6 +78,7 @@ public class Warehouse extends Thread {
             menu.addOption(i, new Option(container.getContainer().getContainerID().toString(), () -> {
                 container.getContainer().openContainerMenu();
             }, true));
+            i++;
         }
 
         menu.open();

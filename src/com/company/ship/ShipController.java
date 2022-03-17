@@ -25,6 +25,7 @@ public class ShipController {
             menu.addOption(i, new Option(ship.getShipName(), () -> {
                 ship.openShipMenu();
             }, false));
+            i++;
         }
 
         menu.open();

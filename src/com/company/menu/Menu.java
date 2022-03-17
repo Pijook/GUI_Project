@@ -1,5 +1,6 @@
 package com.company.menu;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -22,6 +23,11 @@ public class Menu {
 
         int selectedOption = -1;
         while(selectedOption != 0){
+            try {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } catch (InterruptedException | IOException e) {
+                e.printStackTrace();
+            }
             System.out.println("");
             System.out.println("----------------------");
             System.out.println("   " + menuTitle + "   ");

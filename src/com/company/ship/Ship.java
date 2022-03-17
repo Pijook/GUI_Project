@@ -84,6 +84,7 @@ public class Ship {
                     container.openContainerMenu();
                 }
             }, false));
+            i++;
         }
 
         menu.open();
