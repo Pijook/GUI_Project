@@ -1,6 +1,5 @@
 package com.company.ship;
 
-import com.company.container.Container;
 import com.company.menu.Menu;
 import com.company.menu.Option;
 
@@ -24,35 +23,9 @@ public class ShipController {
         int i = 1;
         for(Ship ship : ships){
             menu.addOption(i, new Option(ship.getShipName(), () -> {
-                openShipMenu(ship);
+                ship.openShipMenu();
             }, false));
         }
-
-        menu.open();
-    }
-
-    public void openShipMenu(Ship ship){
-        Menu menu = new Menu("Ship " + ship.getShipName());
-
-        menu.addOption(1, new Option("Show info", () -> {
-            System.out.println(ship);
-        }, false));
-
-        menu.addOption(2, new Option("Show containers", () -> {
-            System.out.println("----------------------");
-            System.out.println("Containers on " + ship.getShipName());
-            System.out.println("----------------------");
-
-            if(ship.getContainers().size() > 0){
-                for(Container container : ship.getContainers()){
-                    System.out.println(container);
-                    System.out.println("----------------------");
-                }
-            }
-            else{
-                System.out.println("Ship currently is full unloaded!");
-            }
-        }, false));
 
         menu.open();
     }

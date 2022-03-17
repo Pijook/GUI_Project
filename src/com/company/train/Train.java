@@ -1,4 +1,4 @@
-package com.company;
+package com.company.train;
 
 import com.company.container.Container;
 
@@ -17,14 +17,23 @@ public class Train extends Thread {
     @Override
     public void run() {
         try {
+            System.out.println("Train left station!");
+
             onTheWay = true;
             sleep(30 * 1000);
-            onTheWay = false;
             loadedContainers.clear();
+            onTheWay = false;
+
+            System.out.println("Train is back!");
+
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            return;
         }
 
+    }
+
+    public boolean isOnTrain(Container container){
+        return loadedContainers.contains(container);
     }
 
     public void loadContainer(Container container){

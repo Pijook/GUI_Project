@@ -1,11 +1,15 @@
 package com.company.ship;
 
+import com.company.Main;
 import com.company.container.*;
 import com.company.container.containerTypes.Hazardous;
 import com.company.container.exceptions.NotEnoughSpaceException;
 import com.company.container.exceptions.TooManyElectricContainersException;
 import com.company.container.exceptions.TooManyDangerousContainersException;
 import com.company.container.exceptions.TooManyHeavyContainersException;
+import com.company.menu.Menu;
+import com.company.menu.Option;
+import com.company.warehouse.exceptions.FullWarehouseException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +43,52 @@ public class Ship {
         this.containers = new ArrayList<>();
     }
 
+    public void openShipMenu(){
+        Menu menu = new Menu("Ship " + getShipName());
+
+        menu.addOption(1, new Option("Show info", () -> {
+            System.out.println(this);
+        }, false));
+
+        menu.addOption(2, new Option("Show containers", () -> {
+            System.out.println("----------------------");
+            System.out.println("Containers on " + getShipName());
+            System.out.println("----------------------");
+
+            if(getContainers().size() > 0){
+                for(Container container : getContainers()){
+                    System.out.println(container);
+                    System.out.println("----------------------");
+                }
+            }
+            else{
+                System.out.println("Ship currently is full unloaded!");
+            }
+        }, false));
+
+        menu.addOption(3, new Option("Manage containers", () -> {
+            openManageContainersOnShipMenu();
+        }, false));
+
+        menu.open();
+    }
+
+    private void openManageContainersOnShipMenu(){
+        Menu menu = new Menu("Manage containers");
+
+        int i = 1;
+        for(Container container : getContainers()){
+            menu.addOption(i, new Option(container.getContainerID().toString(), new Runnable() {
+                @Override
+                public void run() {
+                    container.openContainerMenu();
+                }
+            }, false));
+        }
+
+        menu.open();
+    }
+
     public void loadContainer(Container container, boolean force) throws NotEnoughSpaceException, TooManyHeavyContainersException, TooManyElectricContainersException, TooManyDangerousContainersException {
         if (!force) {
             double loadedMass = 0.0;
@@ -70,11 +120,19 @@ public class Ship {
         }
         containers.add(container);
         container.setOnShip(shipName);
+        Main.getWarehouse().removeContainer(container);
     }
 
-    public void unLoadContainer(Container container){
+    public void unLoadContainer(Container container, String destination) throws FullWarehouseException {
         containers.remove(container);
         container.setOnShip(null);
+
+        if(destination.equalsIgnoreCase("warehouse")){
+            Main.getWarehouse().storeContainer(container);
+        }
+        else if(destination.equalsIgnoreCase("train")){
+            Main.getTrain().loadContainer(container);
+        }
     }
 
     public String getShipName() {

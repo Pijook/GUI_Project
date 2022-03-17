@@ -8,81 +8,17 @@ import com.company.container.exceptions.TooManyHeavyContainersException;
 import com.company.menu.Menu;
 import com.company.menu.Option;
 import com.company.ship.Ship;
+import com.company.warehouse.StoredContainer;
+import com.company.warehouse.exceptions.FullWarehouseException;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.time.LocalDate;
 import java.util.*;
 
 public class ContainerController {
 
-    private final HashMap<UUID, Container> containers;
-
     public ContainerController(){
-        containers = new HashMap<>();
-    }
-
-    public void openContainersListMenu(){
-        Menu menu = new Menu("Containers");
-        int i = 1;
-        for(Container container : containers.values()){
-            menu.addOption(i, new Option(container.getContainerID().toString(), () -> {
-                openContainerMenu(container);
-            }, false));
-            i++;
-        }
-
-        menu.open();
-    }
-
-    public void openContainerMenu(Container container){
-        Menu menu = new Menu("Container " + container.getContainerID());
-
-        menu.addOption(1, new Option("Show info about container", () -> {
-            System.out.println(container);
-        }, false));
-
-        if(container.isLoadedOnShip()){
-            menu.addOption(2, new Option("Unload from ship", () -> {
-                Main.getShipController().getShip(container.getOnShip()).unLoadContainer(container);
-            }, true));
-        }
-        else{
-            menu.addOption(2, new Option("Load on ship", () -> {
-                openLoadOnShipMenu(container);
-            }, true));
-        }
-
-        menu.addOption(3, new Option("Remove container", () -> {
-
-        }, true));
-
-        menu.open();
-    }
-
-    public void openLoadOnShipMenu(Container container){
-        Menu menu = new Menu("Choose ship");
-        int i = 1;
-        for(Ship ship : Main.getShipController().getShips()){
-            menu.addOption(i, new Option(ship.getShipName(), () -> {
-                try {
-                    ship.loadContainer(container, false);
-                    System.out.println("Loaded container on ship!");
-                } catch (NotEnoughSpaceException e) {
-                    System.out.println("Ship reached it's max capacity!");
-                } catch (TooManyHeavyContainersException e) {
-                    System.out.println("Ship reached max amount of heavy containers!");
-                } catch (TooManyElectricContainersException e) {
-                    System.out.println("Ship reached max amount of liquid containers!");
-                } catch (TooManyDangerousContainersException e) {
-                    System.out.println("Ship reached max amount of dangerous containers!");
-                }
-            }, true));
-            i++;
-        }
-
-        menu.open();
+        //containers = new HashMap<>();
     }
 
     public void openCreateContainerMenu(){
@@ -196,13 +132,19 @@ public class ContainerController {
         }
 
         if(container != null){
-            containers.put(container.getContainerID(), container);
+            try {
+                Main.getWarehouse().storeContainer(container);
+                //containers.put(container.getContainerID(), container);
+            } catch (FullWarehouseException e) {
+                e.printStackTrace();
+                System.out.println("Warehouse max capacity reached!");
+            }
             System.out.println("Created new container!");
         }
     }
 
     /**
-     * Loads created containers from containers.txt files
+     * Loads created containers from shippedContainers.txt files
      * Available containers types
      * - Normal
      * - Cooling
@@ -214,16 +156,35 @@ public class ContainerController {
      * @throws IOException Thrown when couldn't create or find file
      * @throws NotEnoughSpaceException Thrown when ship is overloaded
      */
-    public void loadContainers() throws IOException, NotEnoughSpaceException, TooManyHeavyContainersException, TooManyDangerousContainersException, TooManyElectricContainersException {
+    public void loadContainers() {
         System.out.println("Loading containers...");
 
-        File file = new File("containers.txt");
+        int shipped = loadShippedContainers();
+        int stored = loadStoredContainers();
+
+        System.out.println("Loaded " + shipped + " shipped containers!");
+        System.out.println("Loaded " + stored + " stored containers!");
+    }
+
+    private int loadShippedContainers(){
+        File file = new File("shippedContainers.txt");
 
         if(!file.exists()){
-            boolean created = file.createNewFile();
+            try {
+                boolean created = file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
-        Scanner scanner = new Scanner(file);
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        int amount = 0;
 
         while(scanner.hasNext()){
             String line = scanner.nextLine();
@@ -242,49 +203,138 @@ public class ContainerController {
 
                 container = stringToContainer(text.split(";"));
 
-                containers.put(container.getContainerID(), container);
+                //containers.put(container.getContainerID(), container);
+                amount++;
                 if(container.isLoadedOnShip()){
-                    Main.getShipController().getShip(container.getOnShip()).loadContainer(container, true);
+                    try {
+                        Main.getShipController().getShip(container.getOnShip()).loadContainer(container, true);
+                    } catch (NotEnoughSpaceException e) {
+                        e.printStackTrace();
+                    } catch (TooManyHeavyContainersException e) {
+                        e.printStackTrace();
+                    } catch (TooManyElectricContainersException e) {
+                        e.printStackTrace();
+                    } catch (TooManyDangerousContainersException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
 
-        System.out.println("Loaded " + containers.size() + " containers!");
+        return amount;
+    }
+
+    private int loadStoredContainers(){
+        File file = new File("storedContainers.txt");
+
+        if(!file.exists()){
+            try {
+                boolean created = file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        int amount = 0;
+        while(scanner.hasNext()){
+            String line = scanner.nextLine();
+            if(line.equalsIgnoreCase("/")){
+                StoredContainer storedContainer;
+
+                String text = "";
+                int i = 0;
+                while(!text.equalsIgnoreCase("/") && scanner.hasNext()){
+                    if(i > 0){
+                        text += ";";
+                    }
+                    text += scanner.nextLine();
+                    i++;
+                }
+
+                storedContainer = stringToStoredContainer(text.split(";"));
+                Main.getWarehouse().forceAddContainer(storedContainer);
+                amount++;
+            }
+        }
+
+        return amount;
     }
 
     /**
      * Saves all created containers
      * @throws IOException Thrown when couldn't create or find file
      */
-    public void saveContainers() throws IOException {
-        System.out.println("Saving containers...");
+    public void saveShippedContainers() throws IOException {
+        System.out.println("Saving shipped containers...");
 
-        File file = new File("containers.txt");
+        File file = new File("shippedContainers.txt");
 
         if(file.exists()){
             file.delete();
             file.createNewFile();
         }
 
-        List<Container> containerList = new ArrayList<>(containers.values());
+        List<Container> containerList = new ArrayList<>();
+
+        for(Ship ship : Main.getShipController().getShips()){
+            containerList.addAll(ship.getContainers());
+        }
 
         containerList.sort(new Comparator<Container>() {
             @Override
             public int compare(Container o1, Container o2) {
-                return o1.getMass().compareTo(o2.getMass());
+                return o2.getOnShip().compareTo(o1.getOnShip());
             }
         });
 
         PrintWriter printer = new PrintWriter(new FileWriter(file));
 
-        for(Container container : containers.values()){
+        for(Container container : containerList){
             printer.println("/");
             printer.println(container.toString());
         }
 
         printer.close();
 
-        System.out.println("Saved containers!");
+        System.out.println("Saved shipped containers!");
+    }
+
+    public void saveStoredContainers() throws IOException {
+        System.out.println("Saving stored containers...");
+
+        File file = new File("storedContainers.txt");
+
+        if(file.exists()){
+            file.delete();
+            file.createNewFile();
+        }
+
+        List<StoredContainer> storedContainers = new ArrayList<>(Main.getWarehouse().getStoredContainers());
+
+
+        storedContainers.sort(new Comparator<StoredContainer>() {
+            @Override
+            public int compare(StoredContainer o1, StoredContainer o2) {
+                return o1.getContainer().getMass().compareTo(o2.getContainer().getMass());
+            }
+        });
+
+        PrintWriter printer = new PrintWriter(new FileWriter(file));
+
+        for(StoredContainer storedContainer : storedContainers){
+            printer.println("/");
+            printer.println(storedContainer.toString());
+        }
+
+        printer.close();
+
+        System.out.println("Saved stored containers!");
     }
 
     private Container stringToContainer(String[] lines){
@@ -335,19 +385,65 @@ public class ContainerController {
             }
         }
 
-        if(container != null){
-            if(lines[lines.length - 1].contains("onShip")){
-                String shipName = lines[lines.length - 1].split(" ")[1];
-                if(!shipName.equalsIgnoreCase("null")){
-                    container.setOnShip(lines[lines.length - 1].split(" ")[1]);
-                }
-                container.setContainerID(containerID);
-            }
+        String shipName = lines[lines.length - 1].split(" ")[1];
+        if(!shipName.equalsIgnoreCase("null")){
+            container.setOnShip(lines[lines.length - 1].split(" ")[1]);
         }
+        container.setContainerID(containerID);
         return container;
     }
 
-    public HashMap<UUID, Container> getContainers() {
-        return containers;
+    private StoredContainer stringToStoredContainer(String[] lines){
+        String containerType = lines[0].split(" ")[1];
+        UUID containerID = UUID.fromString(lines[1].split(" ")[1]);
+        double mass = Double.parseDouble(lines[2].split(" ")[1]);
+
+        Container container = null;
+        switch (containerType){
+            case "Normal" -> {
+                //Just normal container
+                //Stay chill and be cool B)
+                container = new Container(mass);
+            }
+            case "Cooling" -> {
+                int minVoltage = Integer.parseInt(lines[3].split(" ")[1]);
+                String specialProtection = lines[4].split(" ")[1];
+
+                container = new CoolingContainer(mass, specialProtection, minVoltage);
+            }
+            case "Exploding" -> {
+                double explosionRadius = Double.parseDouble(lines[3].split(" ")[1]);
+                String specialProtection = lines[4].split(" ")[1];
+
+                container = new ExplodingContainer(mass, specialProtection, explosionRadius);
+            }
+            case "HeavyHazardous" -> {
+                String specialProtection = lines[3].split(" ")[1];
+                double radiationLevel = Double.parseDouble(lines[4].split(" ")[1]);
+
+                container = new HazardousHeavyContainer(mass, specialProtection, radiationLevel);
+            }
+            case "HazardousLiquid" -> {
+                double maxCapacity = Double.parseDouble(lines[3].split(" ")[1]);
+                double radiationLevel = Double.parseDouble(lines[4].split(" ")[1]);
+
+                container = new HazardousLiquidContainer(mass, maxCapacity,radiationLevel);
+            }
+            case "Heavy" -> {
+                String specialProtection = lines[3].split(" ")[1];
+
+                container = new HeavyContainer(mass, specialProtection);
+            }
+            case "Liquid" -> {
+                double maxCapacity = Double.parseDouble(lines[3].split(" ")[1]);
+
+                container = new LiquidContainer(mass, maxCapacity);
+            }
+        }
+        String lastLine = lines[lines.length - 1];
+        LocalDate date = LocalDate.parse(lastLine.split(" ")[1]);
+        container.setContainerID(containerID);
+
+        return new StoredContainer(date, container);
     }
 }

@@ -26,7 +26,7 @@ public class PortTime extends Thread {
             Scanner scanner = new Scanner(file);
 
             String line = scanner.nextLine();
-            portDate = LocalDate.parse(line.split(" ")[1]);
+            portDate = LocalDate.parse(line);
         }
     }
 
@@ -45,11 +45,13 @@ public class PortTime extends Thread {
 
     @Override
     public void run() {
-        portDate = portDate.plusDays(1);
-        try {
-            sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        while(true){
+            portDate = portDate.plusDays(1);
+            try {
+                sleep(5000);
+            } catch (InterruptedException e) {
+                break;
+            }
         }
     }
 
