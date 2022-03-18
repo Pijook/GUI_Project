@@ -73,6 +73,14 @@ public class Ship {
             openManageContainersOnShipMenu();
         }, false));
 
+        menu.addOption(4, new Option("Leave port", () -> {
+            System.out.println("");
+            System.out.println(" " + getShipName() + " left port forever");
+            System.out.println("");
+
+            Main.getShipController().getShips().remove(this);
+        }, true));
+
         menu.open();
     }
 

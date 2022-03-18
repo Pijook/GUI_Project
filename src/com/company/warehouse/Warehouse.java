@@ -74,8 +74,13 @@ public class Warehouse extends Thread {
         Menu menu = new Menu("Warehouse menu");
 
         menu.addOption(1, new Option("Show stored containers", () -> {
-            for(StoredContainer container : storedContainers){
-                System.out.println(container);
+            for(StoredContainer storedContainer : storedContainers){
+                Container container = storedContainer.getContainer();
+                String text = storedContainer.toString();
+                if(container instanceof Hazardous || container instanceof Exploding){
+                    //TODO Add time until utilization
+                }
+                System.out.println(text);
             }
         }, false));
 
