@@ -15,13 +15,15 @@ public class Sender {
     private String address;
     private String mail;
     private String userID;
+    private Integer warnings;
 
-    public Sender(String name, String surname, String address, String mail, String userID) {
+    public Sender(String name, String surname, String address, String mail, String userID, Integer warnings) {
         this.name = name;
         this.surname = surname;
         this.address = address;
         this.mail = mail;
         this.userID = userID;
+        this.warnings = warnings;
     }
 
     @Override
@@ -30,7 +32,8 @@ public class Sender {
                 "surname: " + surname + "\n" +
                 "address: " + address + "\n" +
                 "mail: " + mail + "\n" +
-                "userID: " + userID;
+                "userID: " + userID + "\n" +
+                "warnings: " + warnings;
     }
 
     public void openSenderMenu(){
@@ -63,7 +66,7 @@ public class Sender {
             Matcher matcher;
             Pattern pattern = Pattern.compile("^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$");
             mail = null;
-            while(address == null){
+            while(mail == null){
                 System.out.print("E-mail: ");
                 mail = scanner.nextLine();
 
@@ -122,6 +125,10 @@ public class Sender {
         return  LocalDate.parse(year + "-" + monthText + "-" + dayText);
     }
 
+    public void increaseWarnings(int amount){
+        this.warnings += amount;
+    }
+
     public String getName() {
         return name;
     }
@@ -160,5 +167,13 @@ public class Sender {
 
     public void setMail(String mail) {
         this.mail = mail;
+    }
+
+    public Integer getWarnings() {
+        return warnings;
+    }
+
+    public void setWarnings(Integer warnings) {
+        this.warnings = warnings;
     }
 }

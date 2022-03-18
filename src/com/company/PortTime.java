@@ -60,6 +60,8 @@ public class PortTime extends Thread {
     }
 
     public void showCurrentDate(){
+        System.out.println("");
         System.out.println("Current date: " + getPortDate());
+        System.out.println("");
     }
 }

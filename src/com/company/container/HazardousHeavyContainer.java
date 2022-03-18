@@ -41,6 +41,7 @@ public class HazardousHeavyContainer extends Container implements Hazardous, Hea
                 "mass: " + getMass() + "\n" +
                 "specialProtection: " + getSpecialProtection() + "\n" +
                 "radiationLevel: " + getRadiationLevel() + "\n" +
+                "senderID: " + getSenderID() + "\n" +
                 "onShip: " + getOnShip();
     }
 }

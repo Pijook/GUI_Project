@@ -9,8 +9,11 @@ import com.company.container.exceptions.TooManyDangerousContainersException;
 import com.company.container.exceptions.TooManyHeavyContainersException;
 import com.company.menu.Menu;
 import com.company.menu.Option;
+import com.company.sender.Sender;
+import com.company.warehouse.StoredContainer;
 import com.company.warehouse.exceptions.FullWarehouseException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +65,7 @@ public class Ship {
                 }
             }
             else{
-                System.out.println("Ship currently is full unloaded!");
+                System.out.println("Ship is currently empty!");
             }
         }, false));
 
@@ -125,6 +128,14 @@ public class Ship {
     }
 
     public void unLoadContainer(Container container, String destination) throws FullWarehouseException {
+        Sender sender = Main.getSenderController().getSender(container.getSenderID());
+        if(sender.getWarnings() >= 2){
+            System.out.println("");
+            System.out.println(sender.getName() + " " + sender.getSurname() + " is not welcome in this port!");
+            System.out.println("");
+            return;
+        }
+
         containers.remove(container);
         container.setOnShip(null);
 
@@ -132,7 +143,7 @@ public class Ship {
             Main.getWarehouse().storeContainer(container);
         }
         else if(destination.equalsIgnoreCase("train")){
-            Main.getTrain().loadContainer(container);
+            Main.getTrain().loadContainer(new StoredContainer(LocalDate.now(), container));
         }
     }
 

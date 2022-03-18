@@ -1,6 +1,10 @@
 package com.company.warehouse;
 
 import com.company.Main;
+import com.company.container.containerTypes.Exploding;
+import com.company.container.containerTypes.Hazardous;
+import com.company.container.containerTypes.Heavy;
+import com.company.container.containerTypes.Liquid;
 import com.company.menu.Menu;
 import com.company.menu.Option;
 import com.company.train.Train;
@@ -24,36 +28,46 @@ public class Warehouse extends Thread {
 
     @Override
     public void run() {
-        LocalDate currentPortDate = Main.getPortTime().getPortDate();
-        Iterator<StoredContainer> iterator = storedContainers.iterator();
+        while(true){
+            try{
+                LocalDate currentPortDate = Main.getPortTime().getPortDate();
+                Iterator<StoredContainer> iterator = storedContainers.iterator();
 
-        Train train = Main.getTrain();
+                Train train = Main.getTrain();
 
-        while(iterator.hasNext()){
-            StoredContainer storedContainer = iterator.next();
+                while(iterator.hasNext()){
+                    StoredContainer storedContainer = iterator.next();
 
-            if(!train.isOnTheWay()){
-                if(storedContainer.getContainer() instanceof HazardousHeavyContainer){
-                    if(currentPortDate.compareTo(storedContainer.getStoreDate()) >= 10){
-                        train.loadContainer(storedContainer.getContainer());
-                        storedContainers.remove(storedContainer);
+                    if(!train.isOnTheWay()){
+                        Container container = storedContainer.getContainer();
+                        if(container instanceof Liquid && container instanceof Hazardous){
+                            if(currentPortDate.compareTo(storedContainer.getStoreDate()) >= 10){
+                                train.loadContainer(storedContainer);
+                                storedContainers.remove(storedContainer);
+                            }
+                        }
+                        else if(container instanceof Hazardous && container instanceof Heavy){
+                            if(currentPortDate.compareTo(storedContainer.getStoreDate()) >= 14){
+                                train.loadContainer(storedContainer);
+                                storedContainers.remove(storedContainer);
+                            }
+                        }
+                        else if(storedContainer.getContainer() instanceof Exploding){
+                            if(currentPortDate.compareTo(storedContainer.getStoreDate()) >= 5){
+                                train.loadContainer(storedContainer);
+                                storedContainers.remove(storedContainer);
+                            }
+                        }
                     }
                 }
-                else if(storedContainer.getContainer() instanceof LiquidContainer){
-                    if(currentPortDate.compareTo(storedContainer.getStoreDate()) >= 15){
-                        train.loadContainer(storedContainer.getContainer());
-                        storedContainers.remove(storedContainer);
-                    }
-                }
-                else if(storedContainer.getContainer() instanceof ExplodingContainer){
-                    if(currentPortDate.compareTo(storedContainer.getStoreDate()) >= 5){
-                        train.loadContainer(storedContainer.getContainer());
-                        storedContainers.remove(storedContainer);
-                    }
-                }
+
+                sleep(5000);
             }
-
+            catch (InterruptedException e){
+                break;
+            }
         }
+
     }
 
     public void openWarehouseMenu(){
@@ -65,7 +79,13 @@ public class Warehouse extends Thread {
             }
         }, false));
 
-        menu.addOption(2, new Option("Manage containers", this::openManageContainersMenu, false));
+        menu.addOption(2, new Option("Manage containers", () -> {
+            openManageContainersMenu();
+        }, false));
+
+        menu.addOption(3, new Option("Create new container", () -> {
+            Main.getContainerController().openCreateContainerMenu();
+        }, false));
 
         menu.open();
     }

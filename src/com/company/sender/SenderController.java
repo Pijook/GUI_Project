@@ -131,7 +131,7 @@ public class SenderController {
             }
         }
 
-        senders.add(new Sender(name, surname, address, mail, userID));
+        senders.add(new Sender(name, surname, address, mail, userID, 0));
     }
 
     public void loadSenders() throws IOException {
@@ -149,11 +149,17 @@ public class SenderController {
             if(line.contains("/")){
                 String name = scanner.nextLine().split(" ")[1];
                 String surname = scanner.nextLine().split(" ")[1];
-                String address = scanner.nextLine().split(" ")[1];
+                //String address = scanner.nextLine().split(" ")[1];
+                String[] addressLines = scanner.nextLine().split(" ");
+                String address = "";
+                for(int i = 1; i < addressLines.length; i++){
+                    address += addressLines[i] + " ";
+                }
                 String mail = scanner.nextLine().split(" ")[1];
                 String userID = scanner.nextLine().split(" ")[1];
+                int warnings = Integer.parseInt(scanner.nextLine().split(" ")[1]);
 
-                senders.add(new Sender(name, surname, address, mail, userID));
+                senders.add(new Sender(name, surname, address, mail, userID, warnings));
             }
         }
 
@@ -178,4 +184,16 @@ public class SenderController {
         printer.close();
     }
 
+    public Sender getSender(String userID){
+        for(Sender sender : senders){
+            if(sender.getUserID().equals(userID)){
+                return sender;
+            }
+        }
+        return null;
+    }
+
+    public List<Sender> getSenders() {
+        return senders;
+    }
 }

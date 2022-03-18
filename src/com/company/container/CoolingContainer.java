@@ -1,8 +1,9 @@
 package com.company.container;
 
+import com.company.container.containerTypes.Cooling;
 import com.company.container.containerTypes.Heavy;
 
-public class CoolingContainer extends Container implements Heavy {
+public class CoolingContainer extends Container implements Heavy, Cooling {
 
     private double minVoltage;
     private String specialProtection;
@@ -13,10 +14,12 @@ public class CoolingContainer extends Container implements Heavy {
         this.minVoltage = minVoltage;
     }
 
+    @Override
     public double getMinVoltage() {
         return minVoltage;
     }
 
+    @Override
     public void setMinVoltage(double minVoltage) {
         this.minVoltage = minVoltage;
     }
@@ -38,6 +41,7 @@ public class CoolingContainer extends Container implements Heavy {
                 "mass: " + getMass() + "\n" +
                 "minVoltage: " + getMinVoltage() + "\n" +
                 "specialProtection: " + getSpecialProtection() + "\n" +
+                "senderID: " + getSenderID() + "\n" +
                 "onShip: " + getOnShip();
     }
 

@@ -7,6 +7,7 @@ import com.company.container.exceptions.TooManyElectricContainersException;
 import com.company.container.exceptions.TooManyHeavyContainersException;
 import com.company.menu.Menu;
 import com.company.menu.Option;
+import com.company.sender.Sender;
 import com.company.ship.Ship;
 import com.company.warehouse.StoredContainer;
 import com.company.warehouse.exceptions.FullWarehouseException;
@@ -22,40 +23,62 @@ public class ContainerController {
     }
 
     public void openCreateContainerMenu(){
+        Menu menu = new Menu("Choose sender");
+
+        List<Sender> senders = Main.getSenderController().getSenders();
+
+        if(senders.size() == 0){
+            System.out.println("");
+            System.out.println("You must create sender before creating container!");
+            System.out.println("");
+            return;
+        }
+
+        int i = 1;
+        for(Sender sender : senders){
+            menu.addOption(i, new Option(sender.getName() + " " + sender.getSurname(), () -> {
+                openSelectCrateCategoryMenu(sender.getUserID());
+            }, true));
+        }
+
+        menu.open();
+    }
+
+    public void openSelectCrateCategoryMenu(String senderID){
         Menu menu = new Menu("Create container");
 
         menu.addOption(1, new Option("Normal container", () -> {
-            openContainerEditor("normal");
+            openContainerEditor("normal", senderID);
         },true));
 
         menu.addOption(2, new Option("Cooling container", () -> {
-            openContainerEditor("cooling");
+            openContainerEditor("cooling", senderID);
         }, true));
 
         menu.addOption(3, new Option("Exploding container", () -> {
-            openContainerEditor("exploding");
+            openContainerEditor("exploding", senderID);
         }, true));
 
         menu.addOption(4, new Option("Hazardous container", () -> {
-            openContainerEditor("hazardousheavy");
+            openContainerEditor("hazardousheavy", senderID);
         }, true));
 
         menu.addOption(5, new Option("Liquid hazardous container", () -> {
-            openContainerEditor("hazardousliquid");
+            openContainerEditor("hazardousliquid", senderID);
         }, true));
 
         menu.addOption(6, new Option("Heavy container", () -> {
-            openContainerEditor("heavy");
+            openContainerEditor("heavy", senderID);
         }, true));
 
         menu.addOption(7, new Option("Liquid container", () -> {
-            openContainerEditor("liquid");
+            openContainerEditor("liquid", senderID);
         }, true));
 
         menu.open();
     }
 
-    public void openContainerEditor(String containerType){
+    public void openContainerEditor(String containerType, String senderID){
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("===================");
@@ -105,13 +128,16 @@ public class ContainerController {
             case "hazardousliquid" -> {
                 double maxCapacity;
                 double radiationLevel;
+                String specialProtection;
 
+                System.out.print("Special protection: ");
+                specialProtection = scanner.next();
                 System.out.print("Max capacity (in percent): ");
                 maxCapacity = scanner.nextDouble();
                 System.out.print("Radiation level: ");
                 radiationLevel = scanner.nextDouble();
 
-                container = new HazardousLiquidContainer(mass,maxCapacity, radiationLevel);
+                container = new HazardousLiquidContainer(mass, specialProtection,maxCapacity, radiationLevel);
             }
             case "heavy" -> {
                 String specialProtection;
@@ -133,6 +159,7 @@ public class ContainerController {
 
         if(container != null){
             try {
+                container.setSenderID(senderID);
                 Main.getWarehouse().storeContainer(container);
                 //containers.put(container.getContainerID(), container);
             } catch (FullWarehouseException e) {
@@ -154,7 +181,6 @@ public class ContainerController {
      * - Heavy
      * - Liquid
      * @throws IOException Thrown when couldn't create or find file
-     * @throws NotEnoughSpaceException Thrown when ship is overloaded
      */
     public void loadContainers() throws IOException {
         System.out.println("Loading containers...");
@@ -333,6 +359,7 @@ public class ContainerController {
         UUID containerID = UUID.fromString(lines[1].split(" ")[1]);
         double mass = Double.parseDouble(lines[2].split(" ")[1]);
 
+        //TODO Change special protection to load multi word protections
         Container container = null;
         switch (containerType){
             case "Normal" -> {
@@ -360,9 +387,10 @@ public class ContainerController {
             }
             case "HazardousLiquid" -> {
                 double maxCapacity = Double.parseDouble(lines[3].split(" ")[1]);
-                double radiationLevel = Double.parseDouble(lines[4].split(" ")[1]);
+                String specialProtection = lines[4].split(" ")[1];
+                double radiationLevel = Double.parseDouble(lines[5].split(" ")[1]);
 
-                container = new HazardousLiquidContainer(mass, maxCapacity,radiationLevel);
+                container = new HazardousLiquidContainer(mass, specialProtection, maxCapacity,radiationLevel);
             }
             case "Heavy" -> {
                 String specialProtection = lines[3].split(" ")[1];
@@ -376,16 +404,28 @@ public class ContainerController {
             }
         }
 
+        String senderID = lines[lines.length - 2].split(" ")[1];
         String shipName = lines[lines.length - 1].split(" ")[1];
         if(!shipName.equalsIgnoreCase("null")){
             container.setOnShip(lines[lines.length - 1].split(" ")[1]);
         }
         container.setContainerID(containerID);
+        container.setSenderID(senderID);
         return container;
     }
 
     private StoredContainer stringToStoredContainer(String[] lines){
-        String containerType = lines[0].split(" ")[1];
+        String[] containerLines = new String[lines.length - 1];
+
+        for(int i = 0; i < lines.length - 1; i++){
+            containerLines[i] = lines[i];
+        }
+
+        Container container = stringToContainer(containerLines);
+        LocalDate date = LocalDate.parse(lines[lines.length - 1].split(" ")[1]);
+        return new StoredContainer(date, container);
+
+        /*String containerType = lines[0].split(" ")[1];
         UUID containerID = UUID.fromString(lines[1].split(" ")[1]);
         double mass = Double.parseDouble(lines[2].split(" ")[1]);
 
@@ -435,6 +475,6 @@ public class ContainerController {
         LocalDate date = LocalDate.parse(lastLine.split(" ")[1]);
         container.setContainerID(containerID);
 
-        return new StoredContainer(date, container);
+        return new StoredContainer(date, container);*/
     }
 }

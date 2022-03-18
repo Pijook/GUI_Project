@@ -1,15 +1,18 @@
 package com.company.container;
 
 import com.company.container.containerTypes.Hazardous;
+import com.company.container.containerTypes.Heavy;
 import com.company.container.containerTypes.Liquid;
 
-public class HazardousLiquidContainer extends Container implements Hazardous, Liquid {
+public class HazardousLiquidContainer extends Container implements Heavy, Hazardous, Liquid {
 
     private double radiationLevel;
     private double maxCapacity;
+    private String specialProtection;
 
-    public HazardousLiquidContainer(double mass, double maxCapacity, Double radiationLevel) {
+    public HazardousLiquidContainer(double mass, String specialProtection, double maxCapacity, Double radiationLevel) {
         super(mass);
+        this.specialProtection = specialProtection;
         this.radiationLevel = radiationLevel;
         this.maxCapacity = maxCapacity;
     }
@@ -35,14 +38,27 @@ public class HazardousLiquidContainer extends Container implements Hazardous, Li
     }
 
     @Override
+    public String getSpecialProtection() {
+        return specialProtection;
+    }
+
+    @Override
+    public void setSpecialProtection(String specialProtection) {
+        this.specialProtection = specialProtection;
+    }
+
+    @Override
     public String toString() {
         return "type: LiquidHazardous\n" +
                 "containerID: " + getContainerID() + "\n" +
                 "mass: " + getMass() + "\n" +
+                "specialProtection: " + getSpecialProtection() + "\n" +
                 "maxCapacity: " + getMaxCapacity() + "\n" +
                 "radiationLevel: " + getRadiationLevel() + "\n" +
+                "senderID: " + getSenderID() + "\n" +
                 "onShip: " + getOnShip();
     }
+
 
 
 }

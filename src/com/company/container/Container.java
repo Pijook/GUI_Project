@@ -17,11 +17,13 @@ public class Container {
     private UUID containerID;
     private Double mass;
     private String onShip;
+    private String senderID;
 
     public Container(double mass){
         this.containerID = UUID.randomUUID();
         this.mass = mass;
         this.onShip = null;
+        this.senderID = null;
     }
 
     public void openContainerMenu(){
@@ -139,7 +141,15 @@ public class Container {
         return "type: Normal\n" +
                 "containerID: " + containerID + "\n" +
                 "mass: " + mass + "\n" +
-                "onShip: " + onShip;
+                "onShip: " + onShip + "\n" +
+                "senderID: " + senderID;
     }
 
+    public String getSenderID() {
+        return senderID;
+    }
+
+    public void setSenderID(String senderID) {
+        this.senderID = senderID;
+    }
 }

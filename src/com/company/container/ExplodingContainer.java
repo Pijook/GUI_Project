@@ -1,8 +1,9 @@
 package com.company.container;
 
+import com.company.container.containerTypes.Exploding;
 import com.company.container.containerTypes.Heavy;
 
-public class ExplodingContainer extends Container implements Heavy {
+public class ExplodingContainer extends Container implements Heavy, Exploding {
 
     private double explosionRadius;
     private String specialProtection;
@@ -13,10 +14,12 @@ public class ExplodingContainer extends Container implements Heavy {
         this.explosionRadius = explosionRadius;
     }
 
-    public Double getExplosionRadius() {
+    @Override
+    public double getExplosionRadius() {
         return explosionRadius;
     }
 
+    @Override
     public void setExplosionRadius(double explosionRadius) {
         this.explosionRadius = explosionRadius;
     }
@@ -38,6 +41,7 @@ public class ExplodingContainer extends Container implements Heavy {
                 "mass: " + getMass() + "\n" +
                 "explosionRadius: " + getExplosionRadius() + "\n" +
                 "specialProtection: " + getSpecialProtection() + "\n" +
+                "senderID: " + getSenderID() + "\n" +
                 "onShip: " + getOnShip();
     }
 

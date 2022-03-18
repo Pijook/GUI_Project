@@ -27,6 +27,7 @@ public class HeavyContainer extends Container implements Heavy {
                 "containerID: " + getContainerID() + "\n" +
                 "mass: " + getMass() + "\n" +
                 "specialProtection: " + getSpecialProtection() + "\n" +
+                "senderID: " + getSenderID() + "\n" +
                 "onShip: " + getOnShip();
     }
 

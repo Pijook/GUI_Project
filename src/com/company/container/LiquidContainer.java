@@ -27,6 +27,7 @@ public class LiquidContainer extends Container implements Liquid {
                 "containerID: " + getContainerID() + "\n" +
                 "mass: " + getMass() + "\n" +
                 "maxCapacity: " + getMaxCapacity() + "\n" +
+                "senderID: " + getSenderID() + "\n" +
                 "onShip: " + getOnShip();
     }
 }

@@ -45,8 +45,8 @@ public class Menu {
                 continue;
             }
 
+            clearScreen();
             if(options.containsKey(selectedOption)){
-                clearScreen();
                 Option option = options.get(selectedOption);
                 option.getRunnable().run();
                 if(option.isReturnAfterAction()){
@@ -58,6 +58,9 @@ public class Menu {
 
     private void clearScreen(){
         try {
+            /*
+                Resource https://stackoverflow.com/questions/2979383/how-to-clear-the-console
+             */
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();

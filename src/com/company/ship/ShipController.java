@@ -17,6 +17,20 @@ public class ShipController {
         ships = new ArrayList<>();
     }
 
+    public void openShipsMenu(){
+        Menu menu = new Menu("Ships");
+
+        menu.addOption(1, new Option("Show ships", () -> {
+            openShipList();
+        }, false));
+
+        menu.addOption(2, new Option("Create ship", () -> {
+            openShipCreator();
+        }, false));
+
+        menu.open();
+    }
+
     public void openShipList(){
         Menu menu = new Menu("Ships");
 

@@ -34,31 +34,24 @@ public class Main {
     private static void setupMenu(){
         mainMenu = new Menu("Main Menu");
 
-        mainMenu.addOption(1, new Option("Create new ship", () -> {
-            shipController.openShipCreator();
+        mainMenu.addOption(1, new Option("Ships", () -> {
+            shipController.openShipsMenu();
         }, false));
 
-        mainMenu.addOption(2, new Option("Create new container", () -> {
-            containerController.openCreateContainerMenu();
-        }, false));
-
-        mainMenu.addOption(3, new Option("Show ships", () -> {
-            shipController.openShipList();
-        }, false));
-
-        mainMenu.addOption(4, new Option("Manage warehouse", () -> {
+        mainMenu.addOption(2, new Option("Warehouse", () -> {
             warehouse.openWarehouseMenu();
         }, false));
 
-        mainMenu.addOption(5, new Option("Show current date", () -> {
-            portTime.showCurrentDate();
-        }, false));
-
-        mainMenu.addOption(6, new Option("Senders", () -> {
+        mainMenu.addOption(3, new Option("Senders", () -> {
             senderController.openSendersMenu();
         }, false));
 
-        mainMenu.addOption(7, new Option("Save", Main::saveData, false));
+
+        mainMenu.addOption(4, new Option("Current date", () -> {
+            portTime.showCurrentDate();
+        }, false));
+
+        mainMenu.addOption(5, new Option("Save", Main::saveData, false));
     }
 
     private static void loadData() {
@@ -67,7 +60,9 @@ public class Main {
         senderController = new SenderController();
 
         warehouse = new Warehouse(2000);
-        train = new Train();
+        warehouse.start();
+
+        train = new Train(1);
 
         try {
             portTime = new PortTime();
@@ -77,7 +72,6 @@ public class Main {
         } catch (IOException e) {
             System.out.println("Couldn't load ships!");
         }
-
 
         setupMenu();
     }
