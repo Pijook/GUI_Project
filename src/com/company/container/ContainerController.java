@@ -39,6 +39,7 @@ public class ContainerController {
             menu.addOption(i, new Option(sender.getName() + " " + sender.getSurname(), () -> {
                 openSelectCrateCategoryMenu(sender.getUserID());
             }, true));
+            i++;
         }
 
         menu.open();
@@ -79,7 +80,7 @@ public class ContainerController {
     }
 
     public void openContainerEditor(String containerType, String senderID){
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
 
         System.out.println("===================");
         System.out.println("Container creator");

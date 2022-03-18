@@ -28,8 +28,11 @@ public class Warehouse extends Thread {
 
     @Override
     public void run() {
+        this.setName("Warehouse");
         while(true){
             try{
+                sleep(5000);
+
                 LocalDate currentPortDate = Main.getPortTime().getPortDate();
                 Iterator<StoredContainer> iterator = storedContainers.iterator();
 
@@ -60,8 +63,6 @@ public class Warehouse extends Thread {
                         }
                     }
                 }
-
-                sleep(5000);
             }
             catch (InterruptedException e){
                 break;
@@ -78,7 +79,17 @@ public class Warehouse extends Thread {
                 Container container = storedContainer.getContainer();
                 String text = storedContainer.toString();
                 if(container instanceof Hazardous || container instanceof Exploding){
-                    //TODO Add time until utilization
+                    LocalDate date = Main.getPortTime().getPortDate();
+                    if(container instanceof Liquid && container instanceof Hazardous){
+                        date = date.plusDays(10);
+                    }
+                    else if(container instanceof Hazardous && container instanceof Heavy){
+                        date = date.plusDays(14);
+                    }
+                    else if(container instanceof Exploding){
+                        date = date.plusDays(5);
+                    }
+                    text = text + "\n" + "Days until utilization: " + date.compareTo(storedContainer.getStoreDate());
                 }
                 System.out.println(text);
             }

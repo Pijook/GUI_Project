@@ -33,28 +33,30 @@ public class Container {
             System.out.println(this);
         }, false));
 
-        if(isLoadedOnShip()){
-            menu.addOption(2, new Option("Unload from ship", () -> {
-                openUnloadMenu();
-            }, true));
-        }
-        else{
-            menu.addOption(2, new Option("Load on ship", () -> {
-                openLoadOnShipMenu();
-            }, true));
-        }
-
-        menu.addOption(3, new Option("Remove container", () -> {
+        if(!Main.getTrain().isOnTrain(this)){
             if(isLoadedOnShip()){
-                System.out.println("Can't remove container that's stored on ship!");
-            }
-            else if(Main.getTrain().isOnTrain(this)){
-                System.out.println("Can't remove container that's stored on train!");
+                menu.addOption(2, new Option("Unload from ship", () -> {
+                    openUnloadMenu();
+                }, true));
             }
             else{
-                Main.getWarehouse().removeContainer(this);
+                menu.addOption(2, new Option("Load on ship", () -> {
+                    openLoadOnShipMenu();
+                }, true));
             }
-        }, true));
+
+            menu.addOption(3, new Option("Remove container", () -> {
+                if(isLoadedOnShip()){
+                    System.out.println("Can't remove container that's stored on ship!");
+                }
+                else if(Main.getTrain().isOnTrain(this)){
+                    System.out.println("Can't remove container that's stored on train!");
+                }
+                else{
+                    Main.getWarehouse().removeContainer(this);
+                }
+            }, true));
+        }
 
         menu.open();
     }

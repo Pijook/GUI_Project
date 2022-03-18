@@ -46,12 +46,15 @@ public class Main {
             senderController.openSendersMenu();
         }, false));
 
+        mainMenu.addOption(4, new Option("Train", () -> {
+            train.openTrainMenu();
+        }, false));
 
-        mainMenu.addOption(4, new Option("Current date", () -> {
+        mainMenu.addOption(5, new Option("Current date", () -> {
             portTime.showCurrentDate();
         }, false));
 
-        mainMenu.addOption(5, new Option("Save", Main::saveData, false));
+        mainMenu.addOption(6, new Option("Save", Main::saveData, false));
     }
 
     private static void loadData() {
@@ -62,7 +65,7 @@ public class Main {
         warehouse = new Warehouse(2000);
         warehouse.start();
 
-        train = new Train(1);
+        train = new Train(10);
 
         try {
             portTime = new PortTime();
@@ -86,6 +89,7 @@ public class Main {
             senderController.saveSenders();
             portTime.interrupt();
             train.interrupt();
+            warehouse.interrupt();
         }
         catch (IOException e){
             e.printStackTrace();
