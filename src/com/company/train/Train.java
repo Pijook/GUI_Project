@@ -26,6 +26,7 @@ public class Train extends Thread {
         try {
             System.out.println("Train left station!");
 
+            //Show me the wae
             onTheWay = true;
             sleep(30 * 1000);
             for(StoredContainer storedContainer : loadedContainers){

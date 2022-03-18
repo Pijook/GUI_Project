@@ -359,7 +359,6 @@ public class ContainerController {
         UUID containerID = UUID.fromString(lines[1].split(" ")[1]);
         double mass = Double.parseDouble(lines[2].split(" ")[1]);
 
-        //TODO Change special protection to load multi word protections
         Container container = null;
         switch (containerType){
             case "Normal" -> {
@@ -369,25 +368,25 @@ public class ContainerController {
             }
             case "Cooling" -> {
                 int minVoltage = Integer.parseInt(lines[3].split(" ")[1]);
-                String specialProtection = lines[4].split(" ")[1];
+                String specialProtection = getSpecialProtection(lines[4]);
 
                 container = new CoolingContainer(mass, specialProtection, minVoltage);
             }
             case "Exploding" -> {
                 double explosionRadius = Double.parseDouble(lines[3].split(" ")[1]);
-                String specialProtection = lines[4].split(" ")[1];
+                String specialProtection = getSpecialProtection(lines[4]);
 
                 container = new ExplodingContainer(mass, specialProtection, explosionRadius);
             }
             case "HeavyHazardous" -> {
-                String specialProtection = lines[3].split(" ")[1];
+                String specialProtection = getSpecialProtection(lines[3]);
                 double radiationLevel = Double.parseDouble(lines[4].split(" ")[1]);
 
                 container = new HazardousHeavyContainer(mass, specialProtection, radiationLevel);
             }
             case "HazardousLiquid" -> {
                 double maxCapacity = Double.parseDouble(lines[3].split(" ")[1]);
-                String specialProtection = lines[4].split(" ")[1];
+                String specialProtection = getSpecialProtection(lines[4]);
                 double radiationLevel = Double.parseDouble(lines[5].split(" ")[1]);
 
                 container = new HazardousLiquidContainer(mass, specialProtection, maxCapacity,radiationLevel);
@@ -412,6 +411,18 @@ public class ContainerController {
         container.setContainerID(containerID);
         container.setSenderID(senderID);
         return container;
+    }
+
+    private String getSpecialProtection(String line){
+        String[] lines = line.split(" ");
+        StringBuilder a = new StringBuilder();
+        for(int i = 1; i < lines.length; i++){
+            if(i > 1){
+                a.append(" ");
+            }
+            a.append(lines[i]);
+        }
+        return a.toString();
     }
 
     private StoredContainer stringToStoredContainer(String[] lines){
