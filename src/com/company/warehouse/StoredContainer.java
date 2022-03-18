@@ -25,6 +25,6 @@ public class StoredContainer {
     @Override
     public String toString() {
         return container.toString() + "\n" +
-                "storeDate:" + storeDate.toString();
+                "storeDate: " + storeDate.toString();
     }
 }

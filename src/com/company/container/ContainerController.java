@@ -156,7 +156,7 @@ public class ContainerController {
      * @throws IOException Thrown when couldn't create or find file
      * @throws NotEnoughSpaceException Thrown when ship is overloaded
      */
-    public void loadContainers() {
+    public void loadContainers() throws IOException {
         System.out.println("Loading containers...");
 
         int shipped = loadShippedContainers();
@@ -166,15 +166,11 @@ public class ContainerController {
         System.out.println("Loaded " + stored + " stored containers!");
     }
 
-    private int loadShippedContainers(){
+    private int loadShippedContainers() throws IOException {
         File file = new File("shippedContainers.txt");
 
         if(!file.exists()){
-            try {
-                boolean created = file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            file.createNewFile();
         }
 
         Scanner scanner = null;
@@ -223,15 +219,11 @@ public class ContainerController {
         return amount;
     }
 
-    private int loadStoredContainers(){
+    private int loadStoredContainers() throws IOException {
         File file = new File("storedContainers.txt");
 
         if(!file.exists()){
-            try {
-                boolean created = file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            file.createNewFile();
         }
 
         Scanner scanner = null;
@@ -320,7 +312,7 @@ public class ContainerController {
         storedContainers.sort(new Comparator<StoredContainer>() {
             @Override
             public int compare(StoredContainer o1, StoredContainer o2) {
-                return o1.getContainer().getMass().compareTo(o2.getContainer().getMass());
+                return o1.getStoreDate().compareTo(o2.getStoreDate());
             }
         });
 

@@ -23,11 +23,6 @@ public class Menu {
 
         int selectedOption = -1;
         while(selectedOption != 0){
-            try {
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            } catch (InterruptedException | IOException e) {
-                e.printStackTrace();
-            }
             System.out.println("");
             System.out.println("----------------------");
             System.out.println("   " + menuTitle + "   ");
@@ -51,12 +46,21 @@ public class Menu {
             }
 
             if(options.containsKey(selectedOption)){
+                clearScreen();
                 Option option = options.get(selectedOption);
                 option.getRunnable().run();
                 if(option.isReturnAfterAction()){
                     selectedOption = 0;
                 }
             }
+        }
+    }
+
+    private void clearScreen(){
+        try {
+            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
         }
     }
 
