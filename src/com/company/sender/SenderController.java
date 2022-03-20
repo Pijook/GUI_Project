@@ -149,7 +149,6 @@ public class SenderController {
             if(line.contains("/")){
                 String name = scanner.nextLine().split(" ")[1];
                 String surname = scanner.nextLine().split(" ")[1];
-                //String address = scanner.nextLine().split(" ")[1];
                 String[] addressLines = scanner.nextLine().split(" ");
                 String address = "";
                 for(int i = 1; i < addressLines.length; i++){

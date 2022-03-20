@@ -2,25 +2,90 @@ package com.company.train;
 
 import com.company.Main;
 import com.company.container.Container;
-import com.company.container.ExplodingContainer;
 import com.company.container.containerTypes.Exploding;
 import com.company.container.containerTypes.Hazardous;
 import com.company.menu.Menu;
 import com.company.menu.Option;
 import com.company.warehouse.StoredContainer;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Train extends Thread {
 
     private final List<StoredContainer> loadedContainers;
-    private final int maxCapacity;
+    private int maxCapacity;
     private boolean onTheWay;
+    private int trainTime;
 
     public Train(int maxCapacity){
         this.loadedContainers = new ArrayList<>();
         this.maxCapacity = maxCapacity;
+        this.onTheWay = false;
+        this.trainTime = -1;
+    }
+
+    public void load() throws IOException {
+        File file = new File("train.txt");
+
+        if(!file.exists()){
+            file.createNewFile();
+            return;
+        }
+
+        Scanner scanner = new Scanner(file);
+
+        maxCapacity = Integer.parseInt(scanner.nextLine().split(" ")[1]);
+        onTheWay = Boolean.parseBoolean(scanner.nextLine().split(" ")[1]);
+        trainTime = Integer.parseInt(scanner.nextLine().split(" ")[1]);
+
+        while(scanner.hasNext()){
+            String line = scanner.nextLine();
+            if(line.equalsIgnoreCase("/")){
+                StoredContainer storedContainer;
+
+                String text = "";
+                int i = 0;
+                while(!text.equalsIgnoreCase("/") && scanner.hasNext()){
+                    if(i > 0){
+                        text += ";";
+                    }
+                    text += scanner.nextLine();
+                    i++;
+                }
+
+                storedContainer = Main.getContainerController().stringToStoredContainer(text.split(";"));
+                loadedContainers.add(storedContainer);
+            }
+        }
+
+        if(onTheWay){
+            this.start();
+        }
+    }
+
+    public void save() throws IOException {
+        File file = new File("train.txt");
+
+        if(file.exists()){
+            file.delete();
+            file.createNewFile();
+        }
+
+        PrintWriter printer = new PrintWriter(new FileWriter(file));
+
+        printer.println("maxCapacity: " + maxCapacity);
+        printer.println("onTheWay: " + onTheWay);
+        printer.println("trainTime: " + trainTime);
+
+        for(StoredContainer storedContainer : loadedContainers){
+            printer.println("/");
+            printer.println(storedContainer.toString());
+        }
+
+        printer.close();
     }
 
     @Override
@@ -28,9 +93,22 @@ public class Train extends Thread {
         try {
             System.out.println("Train left station!");
 
-            //Show me the wae
+            if(trainTime == -1){
+                trainTime = 30;
+            }
+
             onTheWay = true;
-            sleep(30 * 1000);
+
+            //Show me the wae
+            while(true){
+                sleep(1000);
+                trainTime--;
+
+                if(trainTime <= 0){
+                    break;
+                }
+            }
+
             for(StoredContainer storedContainer : loadedContainers){
                 Container container = storedContainer.getContainer();
                 if(container instanceof Hazardous || container instanceof Exploding){
@@ -42,13 +120,14 @@ public class Train extends Thread {
                     }
                 }
             }
+
             loadedContainers.clear();
             onTheWay = false;
+            trainTime = -1;
 
             System.out.println("Train is back!");
 
         } catch (InterruptedException e) {
-            this.stop();
             return;
         }
 
@@ -82,6 +161,8 @@ public class Train extends Thread {
             }, false));
             i++;
         }
+
+        menu.open();
     }
 
     public boolean isOnTrain(Container container){
@@ -110,5 +191,21 @@ public class Train extends Thread {
 
     public int getMaxCapacity() {
         return maxCapacity;
+    }
+
+    public List<StoredContainer> getLoadedContainers() {
+        return loadedContainers;
+    }
+
+    public void setMaxCapacity(int maxCapacity) {
+        this.maxCapacity = maxCapacity;
+    }
+
+    public int getTrainTime() {
+        return trainTime;
+    }
+
+    public void setTrainTime(int trainTime) {
+        this.trainTime = trainTime;
     }
 }

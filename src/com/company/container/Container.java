@@ -84,6 +84,8 @@ public class Container {
                 System.out.println("Train already left station!");
             }
         }, true));
+
+        menu.open();
     }
 
     public void openLoadOnShipMenu(){

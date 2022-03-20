@@ -123,7 +123,7 @@ public class ShipController {
         System.out.println("Ship creator");
         System.out.println("===================");
 
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
 
         String shipName;
         String port;

@@ -11,11 +11,7 @@ public class PortTime extends Thread {
 
     private LocalDate portDate;
 
-    public PortTime() throws IOException {
-        loadSavedTime();
-    }
-
-    private void loadSavedTime() throws IOException {
+    public void loadSavedTime() throws IOException {
         File file = new File("savedTime.txt");
 
         if(!file.exists()){

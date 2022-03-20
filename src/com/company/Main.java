@@ -24,11 +24,9 @@ public class Main {
     public static void main(String[] args) {
         loadData();
 
-        portTime.start();
-
         mainMenu.open();
 
-        saveData();
+        saveData(true);
     }
 
     private static void setupMenu(){
@@ -54,24 +52,28 @@ public class Main {
             portTime.showCurrentDate();
         }, false));
 
-        mainMenu.addOption(6, new Option("Save", Main::saveData, false));
+        mainMenu.addOption(6, new Option("Save", () -> {
+            saveData(false);
+        }, false));
     }
 
     private static void loadData() {
         shipController = new ShipController();
         containerController = new ContainerController();
         senderController = new SenderController();
-
-        warehouse = new Warehouse(2000);
-        warehouse.start();
-
         train = new Train(10);
+        warehouse = new Warehouse(2000);
+        portTime = new PortTime();
 
         try {
-            portTime = new PortTime();
             shipController.loadShips();
+            portTime.loadSavedTime();
+            train.load();
             senderController.loadSenders();
             containerController.loadContainers();
+
+            portTime.start();
+            warehouse.start();
         } catch (IOException e) {
             System.out.println("Couldn't load ships!");
         }
@@ -79,17 +81,20 @@ public class Main {
         setupMenu();
     }
 
-    private static void saveData(){
-
+    private static void saveData(boolean end){
         try{
+            train.save();
             containerController.saveStoredContainers();
             containerController.saveShippedContainers();
             shipController.saveShips();
             portTime.savePortTime();
             senderController.saveSenders();
-            portTime.interrupt();
-            train.interrupt();
-            warehouse.interrupt();
+
+            if(end){
+                portTime.interrupt();
+                train.interrupt();
+                warehouse.interrupt();
+            }
         }
         catch (IOException e){
             e.printStackTrace();

@@ -13,6 +13,7 @@ import com.company.warehouse.exceptions.FullWarehouseException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,7 +29,6 @@ public class Warehouse extends Thread {
 
     @Override
     public void run() {
-        this.setName("Warehouse");
         while(true){
             try{
                 sleep(5000);
@@ -46,19 +46,22 @@ public class Warehouse extends Thread {
                         if(container instanceof Liquid && container instanceof Hazardous){
                             if(currentPortDate.compareTo(storedContainer.getStoreDate()) >= 10){
                                 train.loadContainer(storedContainer);
-                                storedContainers.remove(storedContainer);
+                                iterator.remove();
+                                System.out.println("Dangerous container with ID " + container.getContainerID() + " just got moved on to the train!");
                             }
                         }
                         else if(container instanceof Hazardous && container instanceof Heavy){
                             if(currentPortDate.compareTo(storedContainer.getStoreDate()) >= 14){
                                 train.loadContainer(storedContainer);
-                                storedContainers.remove(storedContainer);
+                                iterator.remove();
+                                System.out.println("Dangerous container with ID " + container.getContainerID() + " just got moved on to the train!");
                             }
                         }
                         else if(storedContainer.getContainer() instanceof Exploding){
                             if(currentPortDate.compareTo(storedContainer.getStoreDate()) >= 5){
                                 train.loadContainer(storedContainer);
-                                storedContainers.remove(storedContainer);
+                                iterator.remove();
+                                System.out.println("Dangerous container with ID " + container.getContainerID() + " just got moved on to the train!");
                             }
                         }
                     }
@@ -78,6 +81,7 @@ public class Warehouse extends Thread {
             for(StoredContainer storedContainer : storedContainers){
                 Container container = storedContainer.getContainer();
                 String text = storedContainer.toString();
+
                 if(container instanceof Hazardous || container instanceof Exploding){
                     LocalDate date = Main.getPortTime().getPortDate();
                     if(container instanceof Liquid && container instanceof Hazardous){
@@ -89,7 +93,8 @@ public class Warehouse extends Thread {
                     else if(container instanceof Exploding){
                         date = date.plusDays(5);
                     }
-                    text = text + "\n" + "Days until utilization: " + date.compareTo(storedContainer.getStoreDate());
+
+                    text = text + "\n" + "Days until utilization: " + storedContainer.getStoreDate().datesUntil(date);
                 }
                 System.out.println(text);
             }
