@@ -1,14 +1,23 @@
 package com.company;
 
-import com.company.container.ContainerController;
+import com.company.container.*;
+import com.company.container.exceptions.NotEnoughSpaceException;
+import com.company.container.exceptions.TooManyDangerousContainersException;
+import com.company.container.exceptions.TooManyElectricContainersException;
+import com.company.container.exceptions.TooManyHeavyContainersException;
 import com.company.menu.Menu;
 import com.company.menu.Option;
+import com.company.sender.Sender;
 import com.company.sender.SenderController;
+import com.company.ship.Ship;
 import com.company.ship.ShipController;
 import com.company.train.Train;
+import com.company.warehouse.StoredContainer;
 import com.company.warehouse.Warehouse;
+import com.company.warehouse.exceptions.FullWarehouseException;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 public class Main {
 
@@ -74,9 +83,22 @@ public class Main {
 
             portTime.start();
             warehouse.start();
+
+            loadDemo();
         } catch (IOException e) {
             System.out.println("Couldn't load ships!");
+        } catch (FullWarehouseException e) {
+            e.printStackTrace();
+        } catch (NotEnoughSpaceException e) {
+            e.printStackTrace();
+        } catch (TooManyHeavyContainersException e) {
+            e.printStackTrace();
+        } catch (TooManyDangerousContainersException e) {
+            e.printStackTrace();
+        } catch (TooManyElectricContainersException e) {
+            e.printStackTrace();
         }
+
 
         setupMenu();
     }
@@ -99,6 +121,137 @@ public class Main {
         catch (IOException e){
             e.printStackTrace();
         }
+
+    }
+
+    private static void loadDemo() throws FullWarehouseException, NotEnoughSpaceException, TooManyHeavyContainersException, TooManyDangerousContainersException, TooManyElectricContainersException {
+        //Checking if first program run
+        if(shipController.getShips().size() > 0 || senderController.getSenders().size() > 0 || warehouse.getStoredContainers().size() > 0){
+            return;
+        }
+
+        ///Creating demo senders
+        senderController.addSender(new Sender(
+                "Adam",
+                "Kowalski",
+                "Warszawa KEN 11",
+                "adamkowalski@gmail.com",
+                "77042116376",
+                0
+        ));
+
+        senderController.addSender(new Sender(
+                "Ewa",
+                "Zwyczajna",
+                "Gdynia Niepodleglosci 17a",
+                "ewazwyczajna@gmail.com",
+                "82100254545",
+                0
+        ));
+
+        senderController.addSender(new Sender(
+                "Kamil",
+                "Jalowiecki",
+                "Krakow Prosta 17/5b",
+                "kjalowiecki@wp.pl",
+                "50081883111",
+                0
+        ));
+
+        senderController.addSender(new Sender(
+                "Oliwia",
+                "Kulka",
+                "Szczecin Krzywa 32",
+                "oliwiakulka@post.pl",
+                "40042406422",
+                0
+        ));
+
+        //Creating demo containers
+        Container container = new Container(2.0);
+        container.setSenderID("40042406422");
+
+        Container container1 = new CoolingContainer(5.0, "Gloves", 120.0);
+        container1.setSenderID("50081883111");
+
+        Container container2 = new HeavyContainer(10.0, "Belts");
+        container2.setSenderID("40042406422");
+
+        Container container3 = new ExplodingContainer(5.0, "Sunglasses", 50.0);
+        container3.setSenderID("77042116376");
+
+        Container container4 = new HazardousHeavyContainer(10.0, "Sunglasses", 5.0);
+        container4.setSenderID("82100254545");
+
+        //Storing containers
+        warehouse.storeContainer(container1);
+        warehouse.storeContainer(container2);
+
+
+        //Creating demo ships
+        shipController.addShip(new Ship(
+                "Evergreen",
+                "Gdynia Glowna",
+                "Gdynia Glowna",
+                "Los Angeles",
+                25,
+                500.0,
+                10,
+                10,
+                5
+        ));
+
+        shipController.addShip(new Ship(
+                "Titanic",
+                "Los Angeles",
+                "Los Angeles",
+                "Atlantyda",
+                5,
+                50.0,
+                1,
+                1,
+                5
+        ));
+
+        shipController.addShip(new Ship(
+                "Ship",
+                "Atlantyda",
+                "Atlantyda",
+                "Berlin",
+                500,
+                250.0,
+                10,
+                10,
+                5
+        ));
+
+        shipController.addShip(new Ship(
+                "Java",
+                "Oracle",
+                "Oracle",
+                "Windows",
+                999,
+                20.0,
+                19,
+                1,
+                5
+        ));
+
+        shipController.addShip(new Ship(
+                "Stackoverflow",
+                "Internet",
+                "Internet",
+                "Programmers",
+                666,
+                555.0,
+                44,
+                33,
+                2
+        ));
+
+        //Shipping containers
+        shipController.getShip("Stackoverflow").loadContainer(container3, true);
+        shipController.getShip("Stackoverflow").loadContainer(container4, true);
 
     }
 

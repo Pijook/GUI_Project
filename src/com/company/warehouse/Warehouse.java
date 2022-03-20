@@ -154,4 +154,8 @@ public class Warehouse extends Thread {
     public int getMaxContainers() {
         return maxContainers;
     }
+
+    public void addContainer(StoredContainer container){
+        storedContainers.add(container);
+    }
 }

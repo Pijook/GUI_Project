@@ -59,10 +59,10 @@ public class ShipController {
             String line = scanner.nextLine();
             if(line.equalsIgnoreCase("---")){
                 Ship ship = new Ship(
-                        scanner.nextLine().split(" ")[1],
-                        scanner.nextLine().split(" ")[1],
-                        scanner.nextLine().split(" ")[1],
-                        scanner.nextLine().split(" ")[1],
+                        skipFirstWord(scanner.nextLine().split(" ")),
+                        skipFirstWord(scanner.nextLine().split(" ")),
+                        skipFirstWord(scanner.nextLine().split(" ")),
+                        skipFirstWord(scanner.nextLine().split(" ")),
                         Integer.parseInt(scanner.nextLine().split(" ")[1]),
                         Double.parseDouble(scanner.nextLine().split(" ")[1]),
                         Integer.parseInt(scanner.nextLine().split(" ")[1]),
@@ -71,9 +71,6 @@ public class ShipController {
                 );
 
                 ships.add(ship);
-            }
-            else if(line.equalsIgnoreCase("/")){
-
             }
             else if(line.equalsIgnoreCase("...")){
                 break;
@@ -222,5 +219,20 @@ public class ShipController {
             }
         }
         return null;
+    }
+
+    public void addShip(Ship ship){
+        ships.add(ship);
+    }
+
+    private String skipFirstWord(String[] lines){
+        String text = "";
+        for(int i = 1; i < lines.length; i++){
+            if(i > 1){
+                text = text + " ";
+            }
+            text = text + lines[i];
+        }
+        return text;
     }
 }

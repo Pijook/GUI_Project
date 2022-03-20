@@ -403,6 +403,12 @@ public class ContainerController {
         storedContainers.sort(new Comparator<StoredContainer>() {
             @Override
             public int compare(StoredContainer o1, StoredContainer o2) {
+                if(o1.getStoreDate().compareTo(o2.getStoreDate()) == 0){
+                    Sender o1Sender = Main.getSenderController().getSender(o1.getContainer().getSenderID());
+                    Sender o2Sender = Main.getSenderController().getSender(o2.getContainer().getSenderID());
+
+                    return o1Sender.getName().compareTo(o2Sender.getName());
+                }
                 return o1.getStoreDate().compareTo(o2.getStoreDate());
             }
         });
@@ -432,7 +438,7 @@ public class ContainerController {
                 container = new Container(mass);
             }
             case "Cooling" -> {
-                int minVoltage = Integer.parseInt(lines[3].split(" ")[1]);
+                double minVoltage = Double.parseDouble(lines[3].split(" ")[1]);
                 String specialProtection = getSpecialProtection(lines[4]);
 
                 container = new CoolingContainer(mass, specialProtection, minVoltage);
@@ -468,8 +474,8 @@ public class ContainerController {
             }
         }
 
-        String senderID = lines[lines.length - 1].split(" ")[1];
-        String shipName = lines[lines.length - 2].split(" ")[1];
+        String senderID = lines[lines.length - 2].split(" ")[1];
+        String shipName = lines[lines.length - 1].split(" ")[1];
         if(!shipName.equalsIgnoreCase("null")){
             container.setOnShip(shipName);
         }

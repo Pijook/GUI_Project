@@ -145,8 +145,8 @@ public class Container {
         return "type: Normal\n" +
                 "containerID: " + containerID + "\n" +
                 "mass: " + mass + "\n" +
-                "onShip: " + onShip + "\n" +
-                "senderID: " + senderID;
+                "senderID: " + senderID +
+                "onShip: " + onShip;
     }
 
     public String getSenderID() {

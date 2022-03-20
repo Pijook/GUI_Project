@@ -192,6 +192,10 @@ public class SenderController {
         return null;
     }
 
+    public void addSender(Sender sender){
+        senders.add(sender);
+    }
+
     public List<Sender> getSenders() {
         return senders;
     }
