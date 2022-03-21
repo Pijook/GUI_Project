@@ -128,7 +128,7 @@ public class ContainerController {
                 double explosionRadius = 0;
 
                 System.out.print("Special protection: ");
-                specialProtection = scanner.next();
+                specialProtection = scanner.nextLine();
 
                 while(explosionRadius <= 0){
                     try{
@@ -148,7 +148,7 @@ public class ContainerController {
                 double radiationLevel = 0;
 
                 System.out.print("Special protection: ");
-                specialProtection = scanner.next();
+                specialProtection = scanner.nextLine();
 
                 while(radiationLevel <= 0){
                     try{
@@ -169,7 +169,7 @@ public class ContainerController {
                 String specialProtection;
 
                 System.out.print("Special protection: ");
-                specialProtection = scanner.next();
+                specialProtection = scanner.nextLine();
 
                 while(maxCapacity <= 0){
                     try{
@@ -200,7 +200,7 @@ public class ContainerController {
                 String specialProtection;
 
                 System.out.print("Special protection: ");
-                specialProtection = scanner.next();
+                specialProtection = scanner.nextLine();
 
                 container = new HeavyContainer(mass, specialProtection);
             }

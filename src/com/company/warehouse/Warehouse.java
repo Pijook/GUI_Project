@@ -97,6 +97,7 @@ public class Warehouse extends Thread {
                     text = text + "\n" + "Days until utilization: " + storedContainer.getStoreDate().datesUntil(date);
                 }
                 System.out.println(text);
+                System.out.println("");
             }
         }, false));
 
