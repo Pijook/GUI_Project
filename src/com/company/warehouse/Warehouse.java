@@ -13,7 +13,6 @@ import com.company.warehouse.exceptions.FullWarehouseException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class Warehouse extends Thread {
 
     @Override
     public void run() {
-        while(true){
+        while(!isInterrupted()){
             try{
                 sleep(5000);
 

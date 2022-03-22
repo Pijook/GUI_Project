@@ -12,7 +12,7 @@ import com.company.warehouse.exceptions.FullWarehouseException;
 
 import java.util.UUID;
 
-public class Container {
+public abstract class Container {
 
     private UUID containerID;
     private Double mass;
@@ -140,12 +140,21 @@ public class Container {
         return this.onShip != null;
     }
 
-    @Override
+
+    /*@Override
     public String toString() {
         return "type: Normal\n" +
                 "containerID: " + containerID + "\n" +
                 "mass: " + mass + "\n" +
                 "senderID: " + senderID +
+                "onShip: " + onShip;
+    }*/
+
+    @Override
+    public String toString() {
+        return  "containerID: " + containerID + "\n" +
+                "mass: " + mass + "\n" +
+                "senderID: " + senderID + "\n" +
                 "onShip: " + onShip;
     }
 

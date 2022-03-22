@@ -47,7 +47,7 @@ public class HazardousLiquidContainer extends Container implements Heavy, Hazard
         this.specialProtection = specialProtection;
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return "type: LiquidHazardous\n" +
                 "containerID: " + getContainerID() + "\n" +
@@ -57,8 +57,14 @@ public class HazardousLiquidContainer extends Container implements Heavy, Hazard
                 "radiationLevel: " + getRadiationLevel() + "\n" +
                 "senderID: " + getSenderID() + "\n" +
                 "onShip: " + getOnShip();
+    }*/
+
+    @Override
+    public String toString() {
+        return "type: LiquidHazardous\n" +
+                "radiationLevel: " + radiationLevel + "\n" +
+                "maxCapacity: " + maxCapacity + "\n" +
+                "specialProtection: " + specialProtection + "\n" +
+                super.toString();
     }
-
-
-
 }

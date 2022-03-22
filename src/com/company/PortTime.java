@@ -41,9 +41,9 @@ public class PortTime extends Thread {
 
     @Override
     public void run() {
-        while(true){
-            portDate = portDate.plusDays(1);
+        while(!isInterrupted()){
             try {
+                portDate = portDate.plusDays(1);
                 sleep(5000);
             } catch (InterruptedException e) {
                 break;

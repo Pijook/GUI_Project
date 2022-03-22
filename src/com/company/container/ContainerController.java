@@ -101,7 +101,7 @@ public class ContainerController {
         Container container = null;
         switch (containerType){
             case "normal" -> {
-                container = new Container(mass);
+                container = new NormalContainer(mass);
             }
             case "cooling" -> {
                 String specialProtection;
@@ -425,7 +425,7 @@ public class ContainerController {
         System.out.println("Saved stored containers!");
     }
 
-    public Container stringToContainer(String[] lines){
+    /*public Container stringToContainer(String[] lines){
         String containerType = lines[0].split(" ")[1];
         UUID containerID = UUID.fromString(lines[1].split(" ")[1]);
         double mass = Double.parseDouble(lines[2].split(" ")[1]);
@@ -482,9 +482,69 @@ public class ContainerController {
         container.setContainerID(containerID);
         container.setSenderID(senderID);
         return container;
+    }*/
+
+    public Container stringToContainer(String[] lines){
+        String containerType = lines[0].split(" ")[1];
+
+        UUID containerID = UUID.fromString(lines[lines.length - 4].split(" ")[1]);
+        double mass = Double.parseDouble(lines[lines.length - 3].split(" ")[1]);
+        String senderID = lines[lines.length - 2];
+        String shipName = getMultiWordValue(lines[lines.length - 1]);
+
+        Container container = null;
+        switch (containerType){
+            case "Normal" -> {
+                //Just normal container
+                //Stay chill and drink lemonade
+                container = new NormalContainer(mass);
+            }
+            case "Cooling" -> {
+                double minVoltage = Double.parseDouble(lines[1].split(" ")[1]);
+                String specialProtection = getMultiWordValue(lines[2]);
+
+                container = new CoolingContainer(mass, specialProtection, minVoltage);
+            }
+            case "Exploding" -> {
+                double explosionRadius = Double.parseDouble(lines[1].split(" ")[1]);
+                String specialProtection = getMultiWordValue(lines[2]);
+
+                container = new ExplodingContainer(mass, specialProtection, explosionRadius);
+            }
+            case "HeavyHazardous" -> {
+                String specialProtection = getMultiWordValue(lines[2]);
+                double radiationLevel = Double.parseDouble(lines[1].split(" ")[1]);
+
+                container = new HazardousHeavyContainer(mass, specialProtection, radiationLevel);
+            }
+            case "HazardousLiquid" -> {
+                double maxCapacity = Double.parseDouble(lines[2].split(" ")[1]);
+                String specialProtection = getMultiWordValue(lines[3]);
+                double radiationLevel = Double.parseDouble(lines[1].split(" ")[1]);
+
+                container = new HazardousLiquidContainer(mass, specialProtection, maxCapacity,radiationLevel);
+            }
+            case "Heavy" -> {
+                String specialProtection = getMultiWordValue(lines[1]);
+
+                container = new HeavyContainer(mass, specialProtection);
+            }
+            case "Liquid" -> {
+                double maxCapacity = Double.parseDouble(lines[1].split(" ")[1]);
+
+                container = new LiquidContainer(mass, maxCapacity);
+            }
+        }
+
+        if(!shipName.equalsIgnoreCase("null")){
+            container.setOnShip(shipName);
+        }
+        container.setContainerID(containerID);
+        container.setSenderID(senderID);
+        return container;
     }
 
-    private String getSpecialProtection(String line){
+    private String getMultiWordValue(String line){
         String[] lines = line.split(" ");
         StringBuilder a = new StringBuilder();
         for(int i = 1; i < lines.length; i++){

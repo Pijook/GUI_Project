@@ -21,7 +21,7 @@ public class HeavyContainer extends Container implements Heavy {
         this.specialProtection = specialProtection;
     }
 
-    @Override
+   /*@Override
     public String toString() {
         return "type: Heavy\n" +
                 "containerID: " + getContainerID() + "\n" +
@@ -29,6 +29,12 @@ public class HeavyContainer extends Container implements Heavy {
                 "specialProtection: " + getSpecialProtection() + "\n" +
                 "senderID: " + getSenderID() + "\n" +
                 "onShip: " + getOnShip();
-    }
+    }*/
 
+    @Override
+    public String toString() {
+        return "type: Heavy\n" +
+                "specialProtection: " + specialProtection + "\n" +
+                super.toString();
+    }
 }

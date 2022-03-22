@@ -100,7 +100,7 @@ public class Train extends Thread {
             onTheWay = true;
 
             //Show me the wae
-            while(true){
+            while(!isInterrupted()){
                 sleep(1000);
                 trainTime--;
 

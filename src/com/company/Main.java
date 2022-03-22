@@ -168,7 +168,7 @@ public class Main {
         ));
 
         //Creating demo containers
-        Container container = new Container(2.0);
+        Container container = new NormalContainer(2.0);
         container.setSenderID("40042406422");
 
         Container container1 = new CoolingContainer(5.0, "Gloves", 120.0);

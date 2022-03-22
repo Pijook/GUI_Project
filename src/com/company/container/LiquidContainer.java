@@ -21,7 +21,7 @@ public class LiquidContainer extends Container implements Liquid {
         this.maxCapacity = maxCapacity;
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return "type: Liquid\n" +
                 "containerID: " + getContainerID() + "\n" +
@@ -29,5 +29,12 @@ public class LiquidContainer extends Container implements Liquid {
                 "maxCapacity: " + getMaxCapacity() + "\n" +
                 "senderID: " + getSenderID() + "\n" +
                 "onShip: " + getOnShip();
+    }*/
+
+    @Override
+    public String toString() {
+        return "type: Liquid\n" +
+                "maxCapacity: " + maxCapacity + "\n" +
+                super.toString();
     }
 }

@@ -34,7 +34,7 @@ public class ExplodingContainer extends Container implements Heavy, Exploding {
         this.specialProtection = specialProtection;
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return "type: Exploding\n" +
                 "containerID: " + getContainerID() + "\n" +
@@ -43,6 +43,13 @@ public class ExplodingContainer extends Container implements Heavy, Exploding {
                 "specialProtection: " + getSpecialProtection() + "\n" +
                 "senderID: " + getSenderID() + "\n" +
                 "onShip: " + getOnShip();
-    }
+    }*/
 
+    @Override
+    public String toString() {
+        return "type: Exploding\n" +
+                "explosionRadius: " + explosionRadius + "\n" +
+                "specialProtection: " + specialProtection + '\n' +
+                super.toString();
+    }
 }
