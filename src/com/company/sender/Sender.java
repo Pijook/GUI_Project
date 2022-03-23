@@ -4,6 +4,7 @@ import com.company.menu.Menu;
 import com.company.menu.Option;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,9 +16,9 @@ public class Sender {
     private String address;
     private String mail;
     private String userID;
-    private Integer warnings;
+    private List<Warning> warnings;
 
-    public Sender(String name, String surname, String address, String mail, String userID, Integer warnings) {
+    public Sender(String name, String surname, String address, String mail, String userID, List<Warning> warnings) {
         this.name = name;
         this.surname = surname;
         this.address = address;
@@ -32,15 +33,16 @@ public class Sender {
                 "surname: " + surname + "\n" +
                 "address: " + address + "\n" +
                 "mail: " + mail + "\n" +
-                "userID: " + userID + "\n" +
-                "warnings: " + warnings;
+                "userID: " + userID ;
     }
 
     public void openSenderMenu(){
         Menu menu = new Menu(name + " " + surname);
 
         menu.addOption(1, new Option("Show info", () -> {
-            System.out.println(this + "\n" + "birthDate: " + getBirthDate());
+            System.out.println(this + "\n" +
+                    "birthDate: " + getBirthDate() + "\n" +
+                    "warnings: " + getWarnings().size());
         }, false));
 
         menu.addOption(2, new Option("Change address", () -> {
@@ -76,6 +78,20 @@ public class Sender {
                     address = null;
                 }
             }
+
+        }, false));
+
+        menu.addOption(4, new Option("Show warnings", () -> {
+
+            if(warnings.size() > 0){
+                for(Warning warning : warnings){
+                    System.out.println("\n" + warning.toString());
+                }
+            }
+            else{
+                System.out.println("User is clean!");
+            }
+
 
         }, false));
 
@@ -125,8 +141,8 @@ public class Sender {
         return  LocalDate.parse(year + "-" + monthText + "-" + dayText);
     }
 
-    public void increaseWarnings(int amount){
-        this.warnings += amount;
+    public void addWarning(Warning warning){
+        warnings.add(warning);
     }
 
     public String getName() {
@@ -169,11 +185,11 @@ public class Sender {
         this.mail = mail;
     }
 
-    public Integer getWarnings() {
+    public List<Warning> getWarnings() {
         return warnings;
     }
 
-    public void setWarnings(Integer warnings) {
+    public void setWarnings(List<Warning> warnings) {
         this.warnings = warnings;
     }
 }

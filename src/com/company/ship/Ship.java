@@ -137,7 +137,7 @@ public class Ship {
 
     public void unLoadContainer(Container container, String destination) throws FullWarehouseException {
         Sender sender = Main.getSenderController().getSender(container.getSenderID());
-        if(sender.getWarnings() >= 2){
+        if(sender.getWarnings().size() >= 2){
             System.out.println("");
             System.out.println(sender.getName() + " " + sender.getSurname() + " is not welcome in this port!");
             System.out.println("");

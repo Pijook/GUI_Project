@@ -9,6 +9,7 @@ import com.company.menu.Menu;
 import com.company.menu.Option;
 import com.company.sender.Sender;
 import com.company.sender.SenderController;
+import com.company.sender.WarningController;
 import com.company.ship.Ship;
 import com.company.ship.ShipController;
 import com.company.train.Train;
@@ -18,12 +19,14 @@ import com.company.warehouse.exceptions.FullWarehouseException;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Main {
 
     private static ShipController shipController;
     private static ContainerController containerController;
     private static SenderController senderController;
+    private static WarningController warningController;
     private static PortTime portTime;
     private static Warehouse warehouse;
     private static Train train;
@@ -70,6 +73,7 @@ public class Main {
         shipController = new ShipController();
         containerController = new ContainerController();
         senderController = new SenderController();
+        warningController = new WarningController();
         train = new Train(10);
         warehouse = new Warehouse(2000);
         portTime = new PortTime();
@@ -79,26 +83,26 @@ public class Main {
             portTime.loadSavedTime();
             train.load();
             senderController.loadSenders();
+            warningController.loadWarnings();
             containerController.loadContainers();
 
             portTime.start();
             warehouse.start();
 
             loadDemo();
-        } catch (IOException e) {
-            System.out.println("Couldn't load ships!");
         } catch (FullWarehouseException e) {
-            e.printStackTrace();
+            System.out.println("Error occurred while loading stored containers! Warehouse reached max capacity!");
         } catch (NotEnoughSpaceException e) {
-            e.printStackTrace();
+            System.out.println("Error occurred while loading shipped containers! Ship reached max capacity!");
         } catch (TooManyHeavyContainersException e) {
-            e.printStackTrace();
+            System.out.println("Error occurred while loading shipped container! Ship reached max amount of heavy containers!");
+        } catch (IOException e) {
+            System.out.println("Error occurred while loading files! Couldn't create or find files!");
         } catch (TooManyDangerousContainersException e) {
-            e.printStackTrace();
+            System.out.println("Error occurred while loading shipped container! Ship reached max amount of dangerous containers!");
         } catch (TooManyElectricContainersException e) {
-            e.printStackTrace();
+            System.out.println("Error occurred while loading shipped container! Ship reached max amount of containers with electricity!");
         }
-
 
         setupMenu();
     }
@@ -111,6 +115,7 @@ public class Main {
             shipController.saveShips();
             portTime.savePortTime();
             senderController.saveSenders();
+            warningController.saveWarnings();
 
             if(end){
                 portTime.interrupt();
@@ -119,7 +124,7 @@ public class Main {
             }
         }
         catch (IOException e){
-            e.printStackTrace();
+            System.out.println("Error occurred while saving data! Couldn't create new file!");
         }
 
     }
@@ -137,7 +142,7 @@ public class Main {
                 "Warszawa KEN 11",
                 "adamkowalski@gmail.com",
                 "77042116376",
-                0
+                new ArrayList<>()
         ));
 
         senderController.addSender(new Sender(
@@ -146,7 +151,7 @@ public class Main {
                 "Gdynia Niepodleglosci 17a",
                 "ewazwyczajna@gmail.com",
                 "82100254545",
-                0
+                new ArrayList<>()
         ));
 
         senderController.addSender(new Sender(
@@ -155,7 +160,7 @@ public class Main {
                 "Krakow Prosta 17/5b",
                 "kjalowiecki@wp.pl",
                 "50081883111",
-                0
+                new ArrayList<>()
         ));
 
         senderController.addSender(new Sender(
@@ -164,7 +169,7 @@ public class Main {
                 "Szczecin Krzywa 32",
                 "oliwiakulka@post.pl",
                 "40042406422",
-                0
+                new ArrayList<>()
         ));
 
         //Creating demo containers
@@ -277,5 +282,9 @@ public class Main {
 
     public static SenderController getSenderController() {
         return senderController;
+    }
+
+    public static WarningController getWarningController() {
+        return warningController;
     }
 }

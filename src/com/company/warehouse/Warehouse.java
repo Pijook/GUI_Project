@@ -12,6 +12,7 @@ import com.company.container.*;
 import com.company.warehouse.exceptions.FullWarehouseException;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -42,26 +43,28 @@ public class Warehouse extends Thread {
 
                     if(!train.isOnTheWay()){
                         Container container = storedContainer.getContainer();
+                        boolean removed = false;
                         if(container instanceof Liquid && container instanceof Hazardous){
-                            if(currentPortDate.compareTo(storedContainer.getStoreDate()) >= 10){
-                                train.loadContainer(storedContainer);
-                                iterator.remove();
-                                System.out.println("Dangerous container with ID " + container.getContainerID() + " just got moved on to the train!");
+                            if(Period.between(storedContainer.getStoreDate(), currentPortDate).getDays() >= 10){
+                                removed = true;
                             }
                         }
                         else if(container instanceof Hazardous && container instanceof Heavy){
-                            if(currentPortDate.compareTo(storedContainer.getStoreDate()) >= 14){
-                                train.loadContainer(storedContainer);
-                                iterator.remove();
-                                System.out.println("Dangerous container with ID " + container.getContainerID() + " just got moved on to the train!");
+                            if(Period.between(storedContainer.getStoreDate(), currentPortDate).getDays() >= 14){
+                                removed = true;
                             }
                         }
                         else if(storedContainer.getContainer() instanceof Exploding){
-                            if(currentPortDate.compareTo(storedContainer.getStoreDate()) >= 5){
-                                train.loadContainer(storedContainer);
-                                iterator.remove();
-                                System.out.println("Dangerous container with ID " + container.getContainerID() + " just got moved on to the train!");
+                            if(Period.between(storedContainer.getStoreDate(), currentPortDate).getDays() >= 5){
+                                removed = true;
+
                             }
+                        }
+
+                        if(removed){
+                            train.loadContainer(storedContainer);
+                            iterator.remove();
+                            System.out.println("\nDangerous container with ID " + container.getContainerID() + " just got moved on to the train!\n");
                         }
                     }
                 }
@@ -82,18 +85,21 @@ public class Warehouse extends Thread {
                 String text = storedContainer.toString();
 
                 if(container instanceof Hazardous || container instanceof Exploding){
-                    LocalDate date = Main.getPortTime().getPortDate();
+
+                    LocalDate storeDate = storedContainer.getStoreDate();
+                    LocalDate currentDate = Main.getPortTime().getPortDate();
+
                     if(container instanceof Liquid && container instanceof Hazardous){
-                        date = date.plusDays(10);
+                        storeDate = storeDate.plusDays(10);
                     }
                     else if(container instanceof Hazardous && container instanceof Heavy){
-                        date = date.plusDays(14);
+                        storeDate = storeDate.plusDays(14);
                     }
                     else if(container instanceof Exploding){
-                        date = date.plusDays(5);
+                        storeDate = storeDate.plusDays(5);
                     }
 
-                    text = text + "\n" + "Days until utilization: " + storedContainer.getStoreDate().datesUntil(date);
+                    text = text + "\n" + "Days until utilization: " + Period.between(currentDate, storeDate).getDays();
                 }
                 System.out.println(text);
                 System.out.println("");

@@ -1,12 +1,15 @@
 package com.company.sender;
 
+import com.company.Main;
 import com.company.menu.Menu;
 import com.company.menu.Option;
+import com.company.warehouse.StoredContainer;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -136,7 +139,7 @@ public class SenderController {
             }
         }
 
-        senders.add(new Sender(name, surname, address, mail, userID, 0));
+        senders.add(new Sender(name, surname, address, mail, userID, new ArrayList<>()));
     }
 
     public void loadSenders() throws IOException {
@@ -149,6 +152,7 @@ public class SenderController {
 
         Scanner scanner = new Scanner(file);
 
+        Sender sender = null;
         while(scanner.hasNext()){
             String line = scanner.nextLine();
             if(line.contains("/")){
@@ -161,9 +165,9 @@ public class SenderController {
                 }
                 String mail = scanner.nextLine().split(" ")[1];
                 String userID = scanner.nextLine().split(" ")[1];
-                int warnings = Integer.parseInt(scanner.nextLine().split(" ")[1]);
 
-                senders.add(new Sender(name, surname, address, mail, userID, warnings));
+                sender = new Sender(name, surname, address, mail, userID, new ArrayList<>());
+                senders.add(sender);
             }
         }
 

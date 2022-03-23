@@ -6,6 +6,8 @@ import com.company.container.containerTypes.Exploding;
 import com.company.container.containerTypes.Hazardous;
 import com.company.menu.Menu;
 import com.company.menu.Option;
+import com.company.sender.Sender;
+import com.company.sender.Warning;
 import com.company.warehouse.StoredContainer;
 
 import java.io.*;
@@ -46,15 +48,7 @@ public class Train extends Thread {
             if(line.equalsIgnoreCase("/")){
                 StoredContainer storedContainer;
 
-                String text = "";
-                int i = 0;
-                while(!text.equalsIgnoreCase("/") && scanner.hasNext()){
-                    if(i > 0){
-                        text += ";";
-                    }
-                    text += scanner.nextLine();
-                    i++;
-                }
+                String text = Main.getContainerController().getTextBetweenSymbols(scanner, "/");
 
                 storedContainer = Main.getContainerController().stringToStoredContainer(text.split(";"));
                 loadedContainers.add(storedContainer);
@@ -83,6 +77,7 @@ public class Train extends Thread {
         for(StoredContainer storedContainer : loadedContainers){
             printer.println("/");
             printer.println(storedContainer.toString());
+            printer.println("/");
         }
 
         printer.close();
@@ -91,7 +86,7 @@ public class Train extends Thread {
     @Override
     public void run() {
         try {
-            System.out.println("Train left station!");
+            System.out.println("\nTrain left station!\n");
 
             if(trainTime == -1){
                 trainTime = 30;
@@ -112,11 +107,16 @@ public class Train extends Thread {
             for(StoredContainer storedContainer : loadedContainers){
                 Container container = storedContainer.getContainer();
                 if(container instanceof Hazardous || container instanceof Exploding){
-                    Main.getSenderController().getSender(storedContainer.getContainer().getSenderID()).increaseWarnings(1);
+                    Main.getSenderController().getSender(storedContainer.getContainer().getSenderID())
+                            .addWarning(new Warning(
+                                    Main.getPortTime().getPortDate(),
+                                    storedContainer
+                            ));
                     try {
                         throw new IrresponsibleSenderWithDangerousGoods(storedContainer);
                     } catch (IrresponsibleSenderWithDangerousGoods e) {
-                        e.printStackTrace();
+                        Sender sender = Main.getSenderController().getSender(container.getSenderID());
+                        System.out.println("\n" + sender.getName() + " got warning for leaving dangerous container with ID " + container.getContainerID() + " in warehouse for too long!\n");
                     }
                 }
             }
@@ -125,7 +125,7 @@ public class Train extends Thread {
             onTheWay = false;
             trainTime = -1;
 
-            System.out.println("Train is back!");
+            System.out.println("\nTrain is back!\n");
 
         } catch (InterruptedException e) {
             return;
