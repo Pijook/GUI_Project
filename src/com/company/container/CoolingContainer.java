@@ -34,17 +34,6 @@ public class CoolingContainer extends Container implements Heavy, Cooling {
         this.specialProtection = specialProtection;
     }
 
-    /*@Override
-    public String toString() {
-        return "type: Cooling\n" +
-                "containerID: " + getContainerID() + "\n" +
-                "mass: " + getMass() + "\n" +
-                "minVoltage: " + getMinVoltage() + "\n" +
-                "specialProtection: " + getSpecialProtection() + "\n" +
-                "senderID: " + getSenderID() + "\n" +
-                "onShip: " + getOnShip();
-    }*/
-
     @Override
     public String toString() {
         return  "type: Cooling\n" +

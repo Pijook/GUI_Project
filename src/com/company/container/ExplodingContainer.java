@@ -34,17 +34,6 @@ public class ExplodingContainer extends Container implements Heavy, Exploding {
         this.specialProtection = specialProtection;
     }
 
-    /*@Override
-    public String toString() {
-        return "type: Exploding\n" +
-                "containerID: " + getContainerID() + "\n" +
-                "mass: " + getMass() + "\n" +
-                "explosionRadius: " + getExplosionRadius() + "\n" +
-                "specialProtection: " + getSpecialProtection() + "\n" +
-                "senderID: " + getSenderID() + "\n" +
-                "onShip: " + getOnShip();
-    }*/
-
     @Override
     public String toString() {
         return "type: Exploding\n" +

@@ -34,17 +34,6 @@ public class HazardousHeavyContainer extends Container implements Hazardous, Hea
         this.specialProtection = specialProtection;
     }
 
-    /*@Override
-    public String toString() {
-        return "type: HeavyHazardous\n" +
-                "containerID: " + getContainerID() + "\n" +
-                "mass: " + getMass() + "\n" +
-                "specialProtection: " + getSpecialProtection() + "\n" +
-                "radiationLevel: " + getRadiationLevel() + "\n" +
-                "senderID: " + getSenderID() + "\n" +
-                "onShip: " + getOnShip();
-    }*/
-
     @Override
     public String toString() {
         return "type: HeavyHazardous\n" +

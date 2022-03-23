@@ -21,16 +21,6 @@ public class HeavyContainer extends Container implements Heavy {
         this.specialProtection = specialProtection;
     }
 
-   /*@Override
-    public String toString() {
-        return "type: Heavy\n" +
-                "containerID: " + getContainerID() + "\n" +
-                "mass: " + getMass() + "\n" +
-                "specialProtection: " + getSpecialProtection() + "\n" +
-                "senderID: " + getSenderID() + "\n" +
-                "onShip: " + getOnShip();
-    }*/
-
     @Override
     public String toString() {
         return "type: Heavy\n" +

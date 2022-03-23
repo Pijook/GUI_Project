@@ -140,16 +140,6 @@ public abstract class Container {
         return this.onShip != null;
     }
 
-
-    /*@Override
-    public String toString() {
-        return "type: Normal\n" +
-                "containerID: " + containerID + "\n" +
-                "mass: " + mass + "\n" +
-                "senderID: " + senderID +
-                "onShip: " + onShip;
-    }*/
-
     @Override
     public String toString() {
         return  "containerID: " + containerID + "\n" +
