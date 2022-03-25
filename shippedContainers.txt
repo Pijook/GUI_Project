@@ -1,0 +1,18 @@
+/
+type: Exploding
+explosionRadius: 50.0
+specialProtection: Sunglasses
+containerID: da32291d-8157-45b6-955c-b7c62109081e
+mass: 5.0
+senderID: 77042116376
+onShip: Stackoverflow
+/
+/
+type: HeavyHazardous
+radiationLevel: 5.0
+specialProtection: Sunglasses
+containerID: b6e60857-da8c-4b5d-88a3-69e86b51ee31
+mass: 10.0
+senderID: 82100254545
+onShip: Stackoverflow
+/

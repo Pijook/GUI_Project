@@ -1,0 +1,19 @@
+/
+type: Cooling
+minVoltage: 120.0
+specialProtection: Gloves
+containerID: c55f10c1-191c-48a5-bef5-5d962365a389
+mass: 5.0
+senderID: 50081883111
+onShip: null
+storeDate: 2022-03-26
+/
+/
+type: Heavy
+specialProtection: Belts
+containerID: a2cbdeda-1f92-4224-9fc3-5946ca8659c8
+mass: 10.0
+senderID: 40042406422
+onShip: null
+storeDate: 2022-03-26
+/

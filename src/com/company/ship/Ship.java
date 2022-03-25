@@ -54,19 +54,7 @@ public class Ship {
         }, false));
 
         menu.addOption(2, new Option("Show containers", () -> {
-            System.out.println("----------------------");
-            System.out.println("Containers on " + getShipName());
-            System.out.println("----------------------");
-
-            if(getContainers().size() > 0){
-                for(Container container : getContainers()){
-                    System.out.println(container);
-                    System.out.println("----------------------");
-                }
-            }
-            else{
-                System.out.println("Ship is currently empty!");
-            }
+           showShippedContainers();
         }, false));
 
         menu.addOption(3, new Option("Manage containers", () -> {
@@ -84,6 +72,22 @@ public class Ship {
         menu.open();
     }
 
+    private void showShippedContainers(){
+        System.out.println("----------------------");
+        System.out.println("Containers on " + getShipName());
+        System.out.println("----------------------");
+
+        if(getContainers().size() > 0){
+            for(Container container : getContainers()){
+                System.out.println(container);
+                System.out.println("----------------------");
+            }
+        }
+        else{
+            System.out.println("Ship is currently empty!");
+        }
+    }
+
     private void openManageContainersOnShipMenu(){
         Menu menu = new Menu("Manage containers");
 
@@ -94,7 +98,7 @@ public class Ship {
                 public void run() {
                     container.openContainerMenu();
                 }
-            }, false));
+            }, true));
             i++;
         }
 

@@ -1,0 +1,51 @@
+---
+ship: Titanic
+port: Los Angeles
+from: Los Angeles
+to: Atlantyda
+maxContainers: 5
+maxContainersMass: 50.0
+maxDangerousContainers: 1
+maxHeavyContainers: 1
+maxContainersWithElectricity: 5
+---
+ship: Stackoverflow
+port: Internet
+from: Internet
+to: Programmers
+maxContainers: 666
+maxContainersMass: 555.0
+maxDangerousContainers: 44
+maxHeavyContainers: 33
+maxContainersWithElectricity: 2
+---
+ship: Ship
+port: Atlantyda
+from: Atlantyda
+to: Berlin
+maxContainers: 500
+maxContainersMass: 250.0
+maxDangerousContainers: 10
+maxHeavyContainers: 10
+maxContainersWithElectricity: 5
+---
+ship: Java
+port: Oracle
+from: Oracle
+to: Windows
+maxContainers: 999
+maxContainersMass: 20.0
+maxDangerousContainers: 19
+maxHeavyContainers: 1
+maxContainersWithElectricity: 5
+---
+ship: Evergreen
+port: Gdynia Glowna
+from: Gdynia Glowna
+to: Los Angeles
+maxContainers: 25
+maxContainersMass: 500.0
+maxDangerousContainers: 10
+maxHeavyContainers: 10
+maxContainersWithElectricity: 5
+...

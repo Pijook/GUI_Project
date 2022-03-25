@@ -1,0 +1,3 @@
+maxCapacity: 10
+onTheWay: false
+trainTime: -1
