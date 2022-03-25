@@ -8,10 +8,18 @@ public class Menu {
 
     private String menuTitle;
     private HashMap<Integer, Option> options;
+    private boolean subMenu;
 
     public Menu(String menuTitle){
         this.menuTitle = menuTitle;
         options = new HashMap<>();
+        this.subMenu = true;
+    }
+
+    public Menu(String menuTitle, boolean subMenu){
+        this.menuTitle = menuTitle;
+        options = new HashMap<>();
+        this.subMenu = subMenu;
     }
 
     public void addOption(Integer optionNumber, Option option){
@@ -31,7 +39,12 @@ public class Menu {
             for(int number : options.keySet()){
                 System.out.println(number + ". " + options.get(number).getOptionName());
             }
-            System.out.println("0. Exit");
+            if(subMenu){
+                System.out.println("0. Back");
+            }
+            else{
+                System.out.println("0. Exit");
+            }
             System.out.println("");
             System.out.print("Choose option: ");
 
@@ -67,4 +80,11 @@ public class Menu {
         }
     }
 
+    public boolean isSubMenu() {
+        return subMenu;
+    }
+
+    public void setSubMenu(boolean subMenu) {
+        this.subMenu = subMenu;
+    }
 }

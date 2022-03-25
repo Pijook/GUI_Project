@@ -40,7 +40,7 @@ public class Main {
     }
 
     private static void setupMenu(){
-        mainMenu = new Menu("Main Menu");
+        mainMenu = new Menu("Main Menu", false);
 
         mainMenu.addOption(1, new Option("Ships", () -> {
             shipController.openShipsMenu();
