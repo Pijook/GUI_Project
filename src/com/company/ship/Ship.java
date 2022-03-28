@@ -46,7 +46,7 @@ public class Ship {
         this.containers = new ArrayList<>();
     }
 
-    public void openShipMenu(){
+    public Menu getShipMenu(){
         Menu menu = new Menu("Ship " + getShipName());
 
         menu.addOption(1, new Option("Show info", () -> {
@@ -58,7 +58,7 @@ public class Ship {
         }, false));
 
         menu.addOption(3, new Option("Manage containers", () -> {
-            openManageContainersOnShipMenu();
+            menu.goToMenu(getManageContainersOnShipMenu());
         }, false));
 
         menu.addOption(4, new Option("Leave port", () -> {
@@ -69,7 +69,7 @@ public class Ship {
             Main.getShipController().getShips().remove(this);
         }, true));
 
-        menu.open();
+        return menu;
     }
 
     private void showShippedContainers(){
@@ -88,7 +88,7 @@ public class Ship {
         }
     }
 
-    private void openManageContainersOnShipMenu(){
+    private Menu getManageContainersOnShipMenu(){
         Menu menu = new Menu("Manage containers");
 
         int i = 1;
@@ -96,13 +96,13 @@ public class Ship {
             menu.addOption(i, new Option(container.getContainerID().toString(), new Runnable() {
                 @Override
                 public void run() {
-                    container.openContainerMenu();
+                    menu.goToMenu(container.getContainerMenu());
                 }
             }, true));
             i++;
         }
 
-        menu.open();
+        return menu;
     }
 
     public void loadContainer(Container container, boolean force) throws NotEnoughSpaceException, TooManyHeavyContainersException, TooManyElectricContainersException, TooManyDangerousContainersException {

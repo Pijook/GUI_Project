@@ -26,7 +26,7 @@ public abstract class Container {
         this.senderID = null;
     }
 
-    public void openContainerMenu(){
+    public Menu getContainerMenu(){
         Menu menu = new Menu("Container " + getContainerID());
 
         menu.addOption(1, new Option("Show info about container", () -> {
@@ -36,12 +36,12 @@ public abstract class Container {
         if(!Main.getTrain().isOnTrain(this)){
             if(isLoadedOnShip()){
                 menu.addOption(2, new Option("Unload from ship", () -> {
-                    openUnloadMenu();
+                    menu.goToMenu(getUnloadMenu());
                 }, true));
             }
             else{
                 menu.addOption(2, new Option("Load on ship", () -> {
-                    openLoadOnShipMenu();
+                    menu.goToMenu(getLoadOnShipMenu());
                 }, true));
             }
 
@@ -58,10 +58,10 @@ public abstract class Container {
             }, true));
         }
 
-        menu.open();
+        return menu;
     }
 
-    public void openUnloadMenu(){
+    public Menu getUnloadMenu(){
         Menu menu = new Menu("Choose unload destination");
 
         menu.addOption(1, new Option("Warehouse", () -> {
@@ -85,10 +85,10 @@ public abstract class Container {
             }
         }, true));
 
-        menu.open();
+        return menu;
     }
 
-    public void openLoadOnShipMenu(){
+    public Menu getLoadOnShipMenu(){
         Menu menu = new Menu("Choose ship");
         int i = 1;
         for(Ship ship : Main.getShipController().getShips()){
@@ -109,7 +109,7 @@ public abstract class Container {
             i++;
         }
 
-        menu.open();
+        return menu;
     }
 
     public UUID getContainerID() {

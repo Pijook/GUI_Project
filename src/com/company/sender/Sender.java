@@ -36,7 +36,7 @@ public class Sender {
                 "userID: " + userID ;
     }
 
-    public void openSenderMenu(){
+    public Menu getSenderMenu(){
         Menu menu = new Menu(name + " " + surname);
 
         menu.addOption(1, new Option("Show info", () -> {
@@ -95,7 +95,7 @@ public class Sender {
 
         }, false));
 
-        menu.open();
+        return menu;
     }
 
     public LocalDate getBirthDate(){

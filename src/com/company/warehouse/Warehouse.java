@@ -76,7 +76,7 @@ public class Warehouse extends Thread {
 
     }
 
-    public void openWarehouseMenu(){
+    public Menu getWarehouseMenu(){
         Menu menu = new Menu("Warehouse menu");
 
         menu.addOption(1, new Option("Show stored containers", () -> {
@@ -107,28 +107,28 @@ public class Warehouse extends Thread {
         }, false));
 
         menu.addOption(2, new Option("Manage containers", () -> {
-            openManageContainersMenu();
+            menu.goToMenu(getManageContainersMenu());
         }, false));
 
         menu.addOption(3, new Option("Create new container", () -> {
-            Main.getContainerController().openCreateContainerMenu();
+            menu.goToMenu(Main.getContainerController().getCretaeContainerMenu());
         }, false));
 
-        menu.open();
+        return menu;
     }
 
-    public void openManageContainersMenu(){
+    public Menu getManageContainersMenu(){
         Menu menu = new Menu("Manage containers");
 
         int i = 1;
         for(StoredContainer container : storedContainers){
             menu.addOption(i, new Option(container.getContainer().getContainerID().toString(), () -> {
-                container.getContainer().openContainerMenu();
+                menu.goToMenu(container.getContainer().getContainerMenu());
             }, true));
             i++;
         }
 
-        menu.open();
+        return menu;
     }
 
     public void storeContainer(Container container) throws FullWarehouseException {

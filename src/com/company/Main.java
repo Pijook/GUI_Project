@@ -43,19 +43,19 @@ public class Main {
         mainMenu = new Menu("Main Menu", false);
 
         mainMenu.addOption(1, new Option("Ships", () -> {
-            shipController.openShipsMenu();
+            mainMenu.goToMenu(shipController.getShipsMenu());
         }, false));
 
         mainMenu.addOption(2, new Option("Warehouse", () -> {
-            warehouse.openWarehouseMenu();
+            mainMenu.goToMenu(warehouse.getWarehouseMenu());
         }, false));
 
         mainMenu.addOption(3, new Option("Senders", () -> {
-            senderController.openSendersMenu();
+            mainMenu.goToMenu(senderController.getSendersMenu());
         }, false));
 
         mainMenu.addOption(4, new Option("Train", () -> {
-            train.openTrainMenu();
+            mainMenu.goToMenu(train.getTrainMenu());
         }, false));
 
         mainMenu.addOption(5, new Option("Current date", () -> {

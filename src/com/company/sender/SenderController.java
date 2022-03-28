@@ -24,32 +24,32 @@ public class SenderController {
         senders = new ArrayList<>();
     }
 
-    public void openSendersMenu(){
+    public Menu getSendersMenu(){
         Menu menu = new Menu("Senders");
 
         menu.addOption(1, new Option("Manage senders", () -> {
-            openManageSendersMenu();
+            menu.goToMenu(getManageSendersMenu());
         }, false));
 
         menu.addOption(2, new Option("Create new sender", () -> {
             createNewSender();
         }, false));
 
-        menu.open();
+        return menu;
     }
 
-    public void openManageSendersMenu(){
+    public Menu getManageSendersMenu(){
         Menu menu = new Menu("Select sender");
 
         int i = 1;
         for(Sender sender : senders){
             menu.addOption(i, new Option(sender.getName() + " " + sender.getSurname(), () -> {
-                sender.openSenderMenu();
+                menu.goToMenu(sender.getSenderMenu());
             }, false));
             i++;
         }
 
-        menu.open();
+        return menu;
     }
 
     public void createNewSender(){
@@ -87,28 +87,9 @@ public class SenderController {
             }
         }
 
-        /*
-            Resource: https://4programmers.net/Forum/PHP/336879-regex_i_adres
-         */
-        /*pattern = Pattern.compile("((\\d)?\\s\\p{L}*)\\s(.*)");
-        while(address == null){
-            System.out.print("Address: ");
-            address = scanner.nextLine();
-
-            matcher = pattern.matcher(address);
-            if(!matcher.find()){
-                System.out.println("Invalid address!");
-                address = null;
-            }
-        }*/
-
         System.out.print("Address: ");
         address = scanner.nextLine();
 
-        /*
-            Resource: https://kb.webcon.pl/wyrazenia-regularne-biznesowe-zastosowanie/
-         */
-        //pattern = Pattern.compile("^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$"); //Previous
         pattern = Pattern.compile("[a-z\\\\.]*[@][a-z]*([\\\\.][a-z]*)+");
         while(mail == null){
             System.out.print("E-mail: ");
@@ -122,10 +103,6 @@ public class SenderController {
             }
         }
 
-        /*
-            Resource: https://kb.webcon.pl/wyrazenia-regularne-biznesowe-zastosowanie/
-         */
-        //pattern = Pattern.compile("^\\d{11}$"); //Previous
         pattern = Pattern.compile("[0-9]{11}");
         while(userID == null){
             System.out.print("Pesel: ");

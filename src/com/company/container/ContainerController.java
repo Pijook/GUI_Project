@@ -22,7 +22,7 @@ public class ContainerController {
 
     }
 
-    public void openCreateContainerMenu(){
+    public Menu getCretaeContainerMenu(){
         Menu menu = new Menu("Choose sender");
 
         List<Sender> senders = Main.getSenderController().getSenders();
@@ -31,21 +31,21 @@ public class ContainerController {
             System.out.println("");
             System.out.println("You must create sender before creating container!");
             System.out.println("");
-            return;
+            return null;
         }
 
         int i = 1;
         for(Sender sender : senders){
             menu.addOption(i, new Option(sender.getName() + " " + sender.getSurname(), () -> {
-                openSelectCrateCategoryMenu(sender.getUserID());
+                menu.goToMenu(getSelectCrateCategoryMenu(sender.getUserID()));
             }, true));
             i++;
         }
 
-        menu.open();
+        return menu;
     }
 
-    public void openSelectCrateCategoryMenu(String senderID){
+    public Menu getSelectCrateCategoryMenu(String senderID){
         Menu menu = new Menu("Create container");
 
         menu.addOption(1, new Option("Normal container", () -> {
@@ -76,7 +76,7 @@ public class ContainerController {
             openContainerEditor("liquid", senderID);
         }, true));
 
-        menu.open();
+        return menu;
     }
 
     public void openContainerEditor(String containerType, String senderID){
@@ -234,18 +234,6 @@ public class ContainerController {
         }
     }
 
-    /**
-     * Loads created containers from shippedContainers.txt files
-     * Available containers types
-     * - Normal
-     * - Cooling
-     * - Exploding
-     * - Hazardous
-     * - HazardousLiquid
-     * - Heavy
-     * - Liquid
-     * @throws IOException Thrown when couldn't create or find file
-     */
     public void loadContainers() throws IOException, NotEnoughSpaceException, TooManyHeavyContainersException, TooManyDangerousContainersException, TooManyElectricContainersException {
         System.out.println("Loading containers...");
 
@@ -330,10 +318,6 @@ public class ContainerController {
         return text;
     }
 
-    /**
-     * Saves all created containers
-     * @throws IOException Thrown when couldn't create or find file
-     */
     public void saveShippedContainers() throws IOException {
         System.out.println("Saving shipped containers...");
 

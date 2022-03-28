@@ -133,7 +133,7 @@ public class Train extends Thread {
 
     }
 
-    public void openTrainMenu(){
+    public Menu getTrainMenu(){
         Menu menu = new Menu("Train menu");
 
         menu.addOption(1, new Option("Show info", () -> {
@@ -145,24 +145,24 @@ public class Train extends Thread {
         }, false));
 
         menu.addOption(2, new Option("Manage containers", () -> {
-            manageContainers();
+            menu.goToMenu(getManageContainersMenu());
         }, false));
 
-        menu.open();
+        return menu;
     }
 
-    public void manageContainers(){
+    public Menu getManageContainersMenu(){
         Menu menu = new Menu("Manage train containers");
 
         int i = 1;
         for(StoredContainer storedContainer : loadedContainers){
             menu.addOption(i, new Option(storedContainer.getContainer().getContainerID().toString(), () -> {
-                storedContainer.getContainer().openContainerMenu();
+                menu.goToMenu(storedContainer.getContainer().getContainerMenu());
             }, false));
             i++;
         }
 
-        menu.open();
+        return menu;
     }
 
     public boolean isOnTrain(Container container){

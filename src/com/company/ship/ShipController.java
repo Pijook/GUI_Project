@@ -17,32 +17,32 @@ public class ShipController {
         ships = new ArrayList<>();
     }
 
-    public void openShipsMenu(){
+    public Menu getShipsMenu(){
         Menu menu = new Menu("Ships");
 
         menu.addOption(1, new Option("Show ships", () -> {
-            openShipList();
+            menu.goToMenu(getShipList());
         }, false));
 
         menu.addOption(2, new Option("Create ship", () -> {
             openShipCreator();
         }, false));
 
-        menu.open();
+        return menu;
     }
 
-    public void openShipList(){
+    public Menu getShipList(){
         Menu menu = new Menu("Ships");
 
         int i = 1;
         for(Ship ship : ships){
             menu.addOption(i, new Option(ship.getShipName(), () -> {
-                ship.openShipMenu();
+                menu.goToMenu(ship.getShipMenu());
             }, false));
             i++;
         }
 
-        menu.open();
+        return menu;
     }
 
     public void loadShips() throws IOException {
