@@ -111,7 +111,7 @@ public class Warehouse extends Thread {
         }, false));
 
         menu.addOption(3, new Option("Create new container", () -> {
-            menu.goToMenu(Main.getContainerController().getCretaeContainerMenu());
+            menu.goToMenu(Main.getContainerController().getCreateContainerMenu());
         }, false));
 
         return menu;

@@ -22,7 +22,7 @@ public class ContainerController {
 
     }
 
-    public Menu getCretaeContainerMenu(){
+    public Menu getCreateContainerMenu(){
         Menu menu = new Menu("Choose sender");
 
         List<Sender> senders = Main.getSenderController().getSenders();

@@ -13,14 +13,14 @@ public class Menu {
 
     public Menu(String menuTitle){
         this.menuTitle = menuTitle;
-        options = new HashMap<>();
+        this.options = new HashMap<>();
         this.subMenu = true;
         this.selectedOption = -2;
     }
 
     public Menu(String menuTitle, boolean subMenu){
         this.menuTitle = menuTitle;
-        options = new HashMap<>();
+        this.options = new HashMap<>();
         this.subMenu = subMenu;
         this.selectedOption = -2;
     }
@@ -46,7 +46,7 @@ public class Menu {
                 System.out.println("-1. Exit");
             }
             else{
-                System.out.println("0. Back");
+                System.out.println("0. Exit");
             }
             System.out.println("");
             System.out.print("Choose option: ");
@@ -61,6 +61,7 @@ public class Menu {
             }
 
             clearScreen();
+
             if(options.containsKey(selectedOption)){
                 Option option = options.get(selectedOption);
                 option.getRunnable().run();
@@ -82,13 +83,8 @@ public class Menu {
     }
 
     private void clearScreen(){
-        try {
-            /*
-                Resource https://stackoverflow.com/questions/2979383/how-to-clear-the-console
-             */
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-        } catch (InterruptedException | IOException e) {
-            e.printStackTrace();
+        for(int i = 0; i < 60; i++){
+            System.out.println("");
         }
     }
 
