@@ -38,7 +38,7 @@ public class ShipController {
         for(Ship ship : ships){
             menu.addOption(i, new Option(ship.getShipName(), () -> {
                 menu.goToMenu(ship.getShipMenu());
-            }, false));
+            }, true));
             i++;
         }
 
