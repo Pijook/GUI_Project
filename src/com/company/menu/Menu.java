@@ -77,6 +77,7 @@ public class Menu {
         if(menu != null){
             int result = menu.open();
             if(result == -1){
+                options.get(selectedOption).setReturnAfterAction(false);
                 selectedOption = result;
             }
         }
