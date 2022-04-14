@@ -74,7 +74,7 @@ public class Main {
         warningController = new WarningController();
         train = new Train(10);
         warehouse = new Warehouse(2000);
-        portTime = new PortTime();
+        portTime = new PortTime(warehouse);
 
         try {
             shipController.loadShips();

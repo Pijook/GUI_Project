@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.warehouse.Warehouse;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,6 +12,11 @@ import java.util.Scanner;
 public class PortTime extends Thread {
 
     private LocalDate portDate;
+    private final Warehouse warehouse;
+
+    public PortTime(Warehouse warehouse){
+        this.warehouse = warehouse;
+    }
 
     public void loadSavedTime() throws IOException {
         File file = new File("savedTime.txt");
@@ -44,6 +51,11 @@ public class PortTime extends Thread {
         while(!isInterrupted()){
             try {
                 portDate = portDate.plusDays(1);
+
+                synchronized (warehouse){
+                    warehouse.notify();
+                }
+
                 sleep(5000);
             } catch (InterruptedException e) {
                 break;

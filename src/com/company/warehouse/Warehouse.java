@@ -30,47 +30,51 @@ public class Warehouse extends Thread {
     @Override
     public void run() {
         while(!isInterrupted()){
-            try{
-                sleep(5000);
-
-                LocalDate currentPortDate = Main.getPortTime().getPortDate();
-                Iterator<StoredContainer> iterator = storedContainers.iterator();
-
-                Train train = Main.getTrain();
-
-                while(iterator.hasNext()){
-                    StoredContainer storedContainer = iterator.next();
-
-                    if(!train.isOnTheWay()){
-                        Container container = storedContainer.getContainer();
-                        boolean removed = false;
-                        if(container instanceof Liquid && container instanceof Hazardous){
-                            if(Period.between(storedContainer.getStoreDate(), currentPortDate).getDays() >= 10){
-                                removed = true;
-                            }
-                        }
-                        else if(container instanceof Hazardous && container instanceof Heavy){
-                            if(Period.between(storedContainer.getStoreDate(), currentPortDate).getDays() >= 14){
-                                removed = true;
-                            }
-                        }
-                        else if(storedContainer.getContainer() instanceof Exploding){
-                            if(Period.between(storedContainer.getStoreDate(), currentPortDate).getDays() >= 5){
-                                removed = true;
-
-                            }
-                        }
-
-                        if(removed){
-                            train.loadContainer(storedContainer);
-                            iterator.remove();
-                            System.out.println("\nDangerous container with ID " + container.getContainerID() + " just got moved on to the train!\n");
-                        }
-                    }
+            synchronized (this){
+                try{
+                    wait();
+                }
+                catch (InterruptedException e){
+                    break;
                 }
             }
-            catch (InterruptedException e){
-                break;
+
+            //sleep(5000);
+
+            LocalDate currentPortDate = Main.getPortTime().getPortDate();
+            Iterator<StoredContainer> iterator = storedContainers.iterator();
+
+            Train train = Main.getTrain();
+
+            while(iterator.hasNext()){
+                StoredContainer storedContainer = iterator.next();
+
+                if(!train.isOnTheWay()){
+                    Container container = storedContainer.getContainer();
+                    boolean removed = false;
+                    if(container instanceof Liquid && container instanceof Hazardous){
+                        if(Period.between(storedContainer.getStoreDate(), currentPortDate).getDays() >= 10){
+                            removed = true;
+                        }
+                    }
+                    else if(container instanceof Hazardous && container instanceof Heavy){
+                        if(Period.between(storedContainer.getStoreDate(), currentPortDate).getDays() >= 14){
+                            removed = true;
+                        }
+                    }
+                    else if(storedContainer.getContainer() instanceof Exploding){
+                        if(Period.between(storedContainer.getStoreDate(), currentPortDate).getDays() >= 5){
+                            removed = true;
+
+                        }
+                    }
+
+                    if(removed){
+                        train.loadContainer(storedContainer);
+                        iterator.remove();
+                        System.out.println("\nDangerous container with ID " + container.getContainerID() + " just got moved on to the train!\n");
+                    }
+                }
             }
         }
 
