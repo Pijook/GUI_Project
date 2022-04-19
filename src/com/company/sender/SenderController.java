@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -114,6 +115,16 @@ public class SenderController {
                 System.out.println("Invalid pesel!");
                 userID = null;
             }
+            else{
+                try{
+                    Sender.userIDToBirthDate(userID);
+                }
+                catch (DateTimeParseException e){
+                    System.out.println("Invalid pesel!");
+                    userID = null;
+                }
+            }
+
         }
 
         senders.add(new Sender(name, surname, address, mail, userID, new ArrayList<>()));

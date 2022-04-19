@@ -41,7 +41,7 @@ public class Sender {
 
         menu.addOption(1, new Option("Show info", () -> {
             System.out.println(this + "\n" +
-                    "birthDate: " + getBirthDate() + "\n" +
+                    "birthDate: " + userIDToBirthDate(userID) + "\n" +
                     "warnings: " + getWarnings().size());
         }, false));
 
@@ -98,7 +98,7 @@ public class Sender {
         return menu;
     }
 
-    public LocalDate getBirthDate(){
+    public static LocalDate userIDToBirthDate(String userID){
         int year = Integer.parseInt(userID.substring(0, 2));
         int month = Integer.parseInt(userID.substring(2, 4));
         String monthText = "";
@@ -138,7 +138,7 @@ public class Sender {
             dayText = String.valueOf(day);
         }
 
-        return  LocalDate.parse(year + "-" + monthText + "-" + dayText);
+        return LocalDate.parse(year + "-" + monthText + "-" + dayText);
     }
 
     public void addWarning(Warning warning){

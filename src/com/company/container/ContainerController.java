@@ -18,10 +18,6 @@ import java.util.*;
 
 public class ContainerController {
 
-    public ContainerController(){
-
-    }
-
     public Menu getCreateContainerMenu(){
         Menu menu = new Menu("Choose sender");
 
